@@ -16,6 +16,22 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".LoginActivity"
+            android:label="@string/title_activity_login"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".TimeTableActivity"
+            android:label="@string/title_activity_time_table"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".student.StudentAttendance"
+            android:label="@string/title_activity_student_attendance"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".faculty.ClassroomAttendance"
+            android:label="@string/title_activity_classroom_attendance"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
