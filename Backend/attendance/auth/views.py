@@ -3,8 +3,8 @@ from django.contrib.auth import authenticate,login
 from django.http import HttpResponse
 from django.http import JsonResponse
 import time, hashlib
-from presence.models import Faculty
-from presence.models import Student
+from presence.models import Faculty, Student, Course, Attendance
+
 
 
 
@@ -40,7 +40,11 @@ def user_login(request):
         response = {
             'success':False,
             'message':"",
-            'token':""
+            'token':"",
+            'profile':None,
+            'username':None,
+            'type':None,
+            'courses': []
         }
 
         #Check if user exists.. user!=None
@@ -51,19 +55,26 @@ def user_login(request):
                 login(request,user)
                 response['success'] = True
                 response['message'] = "Login Successful"
-
                 #Creat a string that can be hashed..
                 token_generator = username+str(time.time()).encode()
 
                 #Generate hash of the token generator string and assign it to response
-                response['token'] = str(user_type)+hashlib.sha1(token_generator).hexdigest()
+                response['token'] = hashlib.sha1(token_generator).hexdigest()
+                response['username'] = username
 
                 #Check the type of user, faculty or student?
                 if faculty:
                     faculty.token = response['token']
+                    response['profile'] = faculty
+                    response['type'] = 1
+                    response['courses'] = [lec.course.name for lec in Lecture.objects.get(lecturer = faculty)]
+
 
                 elif student:
                     student.token = response['tokens']
+                    response['profile'] = student
+                    response['type'] = 2
+                    response['courses'] = [lec.course.name for lec in Lecture.objects.get(div=student.div)]
 
                 print("\n******Response Token**********")
                 print(response['token'], end ='\n\n')
