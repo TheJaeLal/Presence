@@ -96,8 +96,8 @@ public class LoginActivity extends BaseActivity implements LoginContract.LoginVi
         if (userLoginResponse.isStatus()) {
             new SharedPreferenceManager(getApplicationContext()).saveMainPage(1);
             new SharedPreferenceManager(getApplicationContext()).saveAccessToken(userLoginResponse.getAccessToken());
-            new SharedPreferenceManager(getApplicationContext()).saveAccessToken(userLoginResponse.getAccessToken());
-            new SharedPreferenceManager(getApplicationContext()).saveCategory(Integer.parseInt(String.valueOf(userLoginResponse.getAccessToken());
+            new SharedPreferenceManager(getApplicationContext()).(userLoginResponse.getAccessToken());
+            new SharedPreferenceManager(getApplicationContext()).saveCategory(Integer.parseInt(String.valueOf(userLoginResponse.getAccessToken())));
             Intent i = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(i);
             finish();

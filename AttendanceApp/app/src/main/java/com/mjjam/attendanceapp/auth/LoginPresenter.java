@@ -42,7 +42,7 @@ public class LoginPresenter implements LoginContract.LoginPresenter {
                         if (view != null)
                             view.onNetworkException(e);
 
-                    }
+                        }
 
                     @Override
                     public void onNext(UserLoginResponse userLoginResponse) {
