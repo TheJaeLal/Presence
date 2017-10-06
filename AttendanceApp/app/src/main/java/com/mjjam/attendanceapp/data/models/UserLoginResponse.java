@@ -7,10 +7,12 @@ import android.os.Parcelable;
  * Created by Archish on 10/6/2017.
  */
 
-public class UserLoginResponse implements Parcelable{
+public class UserLoginResponse implements Parcelable {
     boolean status;
     String message;
     String accessToken;
+    FacultyProfile facultyProfile;
+    StudentProfile studentProfile;
 
     protected UserLoginResponse(Parcel in) {
         status = in.readByte() != 0;
