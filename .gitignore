@@ -7,3 +7,6 @@ bin/
 .DS_Store
 pip-selfcheck.json
 include/
+meshde/
+**/migrations/
+**/__pycache__/
