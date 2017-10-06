@@ -7,11 +7,7 @@ package com.mjjam.attendanceapp.student;
 public interface StudentAttendanceContract {
 
     interface StudentAttendancePresenter {
-
-    }
-
-
-    interface StudentAttendancePresenter {
+        void fetchData();
 
     }
 }
