@@ -20,7 +20,7 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_time_table" />
+
 
 
 </android.support.design.widget.CoordinatorLayout>

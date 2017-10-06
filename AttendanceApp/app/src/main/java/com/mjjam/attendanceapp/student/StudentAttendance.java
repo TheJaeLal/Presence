@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
+import com.mjjam.attendanceapp.R;
+
 public class StudentAttendance extends AppCompatActivity {
 
     @Override
