@@ -1,0 +1,62 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.mjjam.attendanceapp.dashboard.StudentHomeFragment">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:weightSum="10">
+
+        <com.mjjam.attendanceapp.widgets.BaseTextView
+            style="@style/PrimaryText"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:text="Student Home"
+            android:textSize="25sp" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:orientation="horizontal">
+
+            <com.mjjam.attendanceapp.widgets.BaseTextView
+                android:id="@+id/tvLastName"
+                style="@style/PrimaryText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_weight="0.5"
+                android:text="First Name"
+                android:textSize="20sp" />
+
+            <com.mjjam.attendanceapp.widgets.BaseTextView
+                android:id="@+id/tvFirstName"
+                style="@style/PrimaryText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_weight="0.5"
+                android:text="Last Name"
+                android:textSize="20sp" />
+        </LinearLayout>
+
+        <com.mjjam.attendanceapp.widgets.BaseTextView
+            android:id="@+id/tvRollNO"
+            style="@style/PrimaryText"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="20dp"
+            android:layout_weight="1"
+            android:text="Roll No :"
+            android:textSize="20sp" />
+
+    </LinearLayout>
+
+</FrameLayout>
