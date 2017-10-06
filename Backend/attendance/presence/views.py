@@ -3,6 +3,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from presence.models import Attendance
 from presence.helper import authenticate
+from presence.helper import date_from_string
 
 # Create your views here.
 
@@ -15,5 +16,5 @@ def mark(request):
 			roll = int(roll)
 			stud = authenticate(roll,time,dic["time"])
 			if stud:
-				a = Attendance(lecture=int(dic["tid"]),date=dic["date"],student=stud)
+				a = Attendance(lecture_id=int(dic["tid"]),date=date_from_string(dic["date"]),student=stud)
 	return HttpResponse("OK")
