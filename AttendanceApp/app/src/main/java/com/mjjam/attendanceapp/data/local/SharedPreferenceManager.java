@@ -6,8 +6,12 @@ import android.content.SharedPreferences;
 public class SharedPreferenceManager {
     private SharedPreferences settings;
 
-    private static final String PREFS_NAME = "AttendancePrefs";
-    private static final String PREFS_MOBILENO = "mobileno";
+    private static final String PREFS_USERNAME = "AttendancePrefs";
+    private static final String PREFS_FIRSTNAME = "First";
+    private static final String PREFS_LASTNAME = "Last";
+    private static final String PREFS_ROLLNO = "";
+    private static final String PREFS_ = "";
+
     private static final String PREFS_CATEGORY = "category";
     private static final String PREFS_ACCESS_TOKEN = "accessToken";
     private static final String PREFS_MAINPAGE = "mainpage";
@@ -17,11 +21,6 @@ public class SharedPreferenceManager {
     public SharedPreferenceManager(Context mContext) {
         settings = mContext.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
     }
-
-    public void saveMobileNo(String mobile) {
-        settings.edit().putString(PREFS_MOBILENO, mobile).apply();
-    }
-
 
     public void saveCategory(int category) {
         settings.edit().putInt(PREFS_CATEGORY, category).apply();
@@ -33,10 +32,6 @@ public class SharedPreferenceManager {
 
     public void saveAccessToken(String accessToken) {
         settings.edit().putString(PREFS_ACCESS_TOKEN, accessToken).apply();
-    }
-
-    public String getMobileNo() {
-        return settings.getString(PREFS_MOBILENO, null);
     }
 
     public String getAccessToken() {
