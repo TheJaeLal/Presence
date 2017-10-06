@@ -23,7 +23,7 @@ public class SharedPreferenceManager {
 
 
     public SharedPreferenceManager(Context mContext) {
-        settings = mContext.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        settings = mContext.getSharedPreferences(PREFS_USERNAME, Context.MODE_PRIVATE);
     }
 
     public void saveCategory(int category) {

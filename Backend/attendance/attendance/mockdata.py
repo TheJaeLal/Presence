@@ -40,7 +40,7 @@ def populatedata(request):
         "hod":
             {
                 "username": "mihir.manek",
-                "password": hashlib.sha1("123456".encode('utf-8')).hexdigest(),
+                "password": "123456",
                 "first_name": "Mihir",
                 "last_name": "Manek",
                 "email": "mihir.manek@somaiya.edu",
@@ -70,7 +70,7 @@ def populatedata(request):
     faculties = [
         {
             "username": "jay.lal",
-            "password": hashlib.sha1("123456".encode('utf-8')).hexdigest(),
+            "password": "123456",
             "first_name": "Jay",
             "last_name": "Lal",
             "email": "jay.lal@somaiya.edu",
@@ -78,7 +78,7 @@ def populatedata(request):
         },
         {
             "username": "mehmood.d",
-            "password": hashlib.sha1("123456".encode('utf-8')).hexdigest(),
+            "password": "123456",
             "first_name": "Mehmood",
             "last_name": "Deshmukh",
             "email": "mehmood.d@somaiya.edu",
@@ -124,7 +124,7 @@ def populatedata(request):
     students = [
         {
             "username": "jerin.john",
-            "password": hashlib.sha1("123456".encode('utf-8')).hexdigest(),
+            "password": "123456",
             "first_name": "Jerin",
             "last_name": "John",
             "email": "jerin.john@somaiya.edu",
@@ -135,7 +135,7 @@ def populatedata(request):
         },
         {
             "username": "a.b",
-            "password": hashlib.sha1("123456".encode('utf-8')).hexdigest(),
+            "password": "123456",
             "first_name": "a",
             "last_name": "b",
             "email": "a.b@somaiya.edu",
@@ -199,12 +199,13 @@ def add_department(department, hodinfo):
 
 
 def add_faculty(faculty):
-    userAccount = models.User(email=faculty["email"], first_name=faculty["first_name"], last_name=faculty["last_name"],
-                              password=faculty["password"], username=faculty["username"])
+    userAccount = models.User(email=faculty["email"], first_name=faculty["first_name"], last_name=faculty["last_name"], username=faculty["username"])
 
     try:
         models.User.objects.get(email=faculty["email"])
     except ObjectDoesNotExist as e:
+
+        userAccount.set_password(faculty["password"])
         userAccount.save()
         faculty = models.Faculty.objects.get_or_create(contact=faculty["contact"], user=userAccount)[0]
         faculty.save()
@@ -244,12 +245,14 @@ def add_student(students):
                                                    clas__semester=student["sem"])
             try:
                 user = models.User.objects.get(email=student["email"], first_name=student["first_name"],
-                                               last_name=student["last_name"], password=student["password"],
+                                               last_name=student["last_name"],
                                                username=student["username"])
             except ObjectDoesNotExist as ode:
                 user = models.User(email=student["email"], first_name=student["first_name"],
-                                   last_name=student["last_name"], password=student["password"],
+                                   last_name=student["last_name"],
                                    username=student["username"])
+
+                user.set_password(student["password"])
                 user.save()
 
             stud_obj = models.Student(roll_no=student["rollno"], div=stud_div, user=user)

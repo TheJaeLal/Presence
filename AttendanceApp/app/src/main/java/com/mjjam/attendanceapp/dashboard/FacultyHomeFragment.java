@@ -36,6 +36,8 @@ public class FacultyHomeFragment extends BaseFragment{
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+
+
 //        rvHome = (RecyclerView) view.findViewById(R.id.rvHome);
 //        pgProgress = (ProgressBar) view.findViewById(R.id.pgProgress);
 //        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.srlHome);

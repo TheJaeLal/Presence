@@ -39,5 +39,13 @@ public interface UserRestService {
     Observable<UserResponse> logout(@Field("accessToken") String accessToken);
 
 
+    @FormUrlEncoded
+    @POST("timetable")
+    Observable<UserResponse> getTimeTable(@Field("token") String token,@Field("day") String day);
+
+    @FormUrlEncoded
+    @POST("timetable")
+    Observable<UserResponse> getTimeTable(@Field("token") String token);
+
     //TODO Login "auth/login" success token true false
 }
