@@ -20,10 +20,15 @@ def user_login(request):
         password = request.POST.get('password')
         user_type = request.POST.get('type')
 
+
+        #Initialization..
         faculty = None
         student = None
+        user = None
 
         #Returns reference to user object and corresponding student/faculty object if user exists, returns None otherwise..
+
+
 
         if type==1:
             user,faculty = authenticate(username = username, password = password, type = user_type)
