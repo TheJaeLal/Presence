@@ -1,9 +1,11 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
 
 class Department(models.Model):
 	name = models.CharField(max_length=25)
+	hod = models.ForeignKey(Faculty)
 
 class Semester(models.Model):
 	semester = models.IntegerField()
@@ -26,6 +28,36 @@ class Division(models.Model):
 	clas = models.ForeignKey(Class)
 	# divisions = ('A','B')
 	div = models.CharField(max_length=1)#,choices=divisions)
+
+class Faculty(models.Model):
+	user = models.OneToOneField(User)
+	contact = models.IntegerField()
+	token = models.CharField(max_length=41)
+
+class Course(models.Model):
+	name = models.CharField(max_length=20)
+	clas = models.ForeignKey(Class)
+
+class Lecture(models.Model):
+	course = models.ForeignKey(Course)
+	lecturer = models.ForeignKey(Faculty)
+	div = models.ForeignKey(Division)
+
+class Slot(models.Model):
+	WEEKDAYS = (
+		('1','Monday'),
+		('2','Tuesday'),
+		('3','Wednesday'),
+		('4','Thursday'),
+		('5','Firday'),
+		('6','Saturday'),
+		)
+	day = models.CharField(max_length=1,choices=WEEKDAYS)
+	start = models.TimeField()
+	
+class Timetable(models.Model):
+	lecture = models.ForeignKey(Lecture)
+
 
 
 # class Student(models.Model):
