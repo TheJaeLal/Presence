@@ -3,9 +3,10 @@ from django.contrib.auth import authenticate,login
 from django.http import HttpResponse
 from django.http import JsonResponse
 import time, hashlib
-from presence.models import Faculty, Student, Course, Attendance
+from presence.models import Faculty, Student, Course, Lecture, Attendance
 from auth import backend as MyCustomBackend
-
+from django.core import serializers
+import json
 
 
 # Create your views here.
@@ -21,19 +22,21 @@ def user_login(request):
         password = request.POST.get('password')
         user_type = int(request.POST.get('type'))
 
-
         #Initialization..
         faculty = None
         student = None
         user = None
+        lecs = None
 
         #Returns reference to user object and corresponding student/faculty object if user exists, returns None otherwise..
 
         if user_type==1:
             print("Type==1")
             print("Trying to authenticate user")
-            print("Authentication returned this: ")
-            user = MyCustomBackend.verify_faculty(authenticate(username = username, password = password))
+            print("Authentication returned this: ",end = ' ')
+            user = authenticate(username = username, password = password)
+            faculty = MyCustomBackend.verify_faculty(user)
+            #print(user)
             print("Authentication result : user:{}".format(user,faculty))
 
 
@@ -41,8 +44,8 @@ def user_login(request):
             print("Type==2")
             print("Trying to authenticate user")
             user= authenticate(username = username, password = password)
-            user = MyCustomBackend.verify_student(authenticate(username = username, password = password))
-            print("Authentication result : user:{}".format(user, faculty))
+            student = MyCustomBackend.verify_student(user)
+            print("Authentication result : user:{}".format(user, student))
 
         else:
             print("Type is not equal to 2 nor equal to 1")
@@ -67,6 +70,8 @@ def user_login(request):
                 login(request,user)
                 response['success'] = True
                 response['message'] = "Login Successful"
+                response['type'] = user_type
+
                 #Creat a string that can be hashed..
                 token_generator = username+str(time.time())
                 token_generator = token_generator.encode()
@@ -75,21 +80,39 @@ def user_login(request):
                 response['token'] = hashlib.sha1(token_generator).hexdigest()
                 response['username'] = username
 
+
                 #Check the type of user, faculty or student?
                 if faculty:
                     print("User is a faculty")
                     faculty.token = response['token']
-                    response['profile'] = faculty
+                    response['profile'] = json.loads(serializers.serialize('json', [ faculty, ]))[0]
                     response['type'] = 1
-                    response['courses'] = [lec.course.name for lec in Lecture.objects.get(lecturer = faculty)]
+                    lecs = Lecture.objects.filter(lecturer=faculty)
+
+                    print(lecs)
+                    response['courses'] = [lec.course.name for lec in lecs]
 
 
                 elif student:
                     print('User is a student')
-                    student.token = response['tokens']
-                    response['profile'] = student
+                    student.token = response['token']
+                    response['profile'] = json.loads(serializers.serialize('json', [student, ]))[0]
                     response['type'] = 2
-                    response['courses'] = [lec.course.name for lec in Lecture.objects.get(div=student.div)]
+
+
+                    lecs = Lecture.objects.filter(div=student.div)
+
+                    # print(lecs)
+                    # print(lecs[0].course.name)
+
+
+                    # for lec in lecs:
+                    #     print(lec)
+
+
+                    response['courses'] = [lec.course.name for lec in lecs]
+
+
 
                 print("\n******Response Token**********")
                 print(response['token'], end ='\n\n')

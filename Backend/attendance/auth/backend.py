@@ -16,9 +16,9 @@ def verify_faculty(user):
 
         if valid_type:
             print("***Everything is perfect")
-            return user
+            return valid_type
 
-    except Faculty.DoseNotExist:
+    except Faculty.DoesNotExist:
         return None
 
     return None
@@ -38,9 +38,9 @@ def verify_student(user):
 
         if valid_type:
             print("***Everything is perfect")
-            return user
+            return valid_type
 
-    except Student.DoseNotExist:
+    except Student.DoesNotExist:
         return None
 
     return None
