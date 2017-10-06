@@ -37,7 +37,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/username"
-                android:inputType="phone" />
+                android:inputType="textEmailAddress" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
@@ -53,37 +53,30 @@
                 android:inputType="textPassword" />
         </android.support.design.widget.TextInputLayout>
 
-        <LinearLayout
-            android:id="@+id/llLoginOption"
+        <RadioGroup
+            android:id="@+id/rgType"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <RadioGroup
-                android:id="@+id/rgType"
-                android:layout_width="match_parent"
+            <com.mjjam.attendanceapp.widgets.BaseRadioButton
+                android:id="@+id/rbAsTeacher"
+                style="@style/PrimaryText"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_weight="0.5"
+                android:text="@string/as_teacher"
+                android:textSize="18sp" />
 
-                <com.mjjam.attendanceapp.widgets.BaseRadioButton
-                    android:id="@+id/rbAsTeacher"
-                    style="@style/PrimaryText"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.5"
-                    android:text="@string/as_teacher"
-                    android:textSize="18sp" />
-
-                <com.mjjam.attendanceapp.widgets.BaseRadioButton
-                    android:id="@+id/rbAsStudent"
-                    style="@style/PrimaryText"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.5"
-                    android:text="@string/as_student"
-                    android:textSize="18sp" />
-            </RadioGroup>
-        </LinearLayout>
+            <com.mjjam.attendanceapp.widgets.BaseRadioButton
+                android:id="@+id/rbAsStudent"
+                style="@style/PrimaryText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:text="@string/as_student"
+                android:textSize="18sp" />
+        </RadioGroup>
 
         <com.mjjam.attendanceapp.widgets.BaseButton
 

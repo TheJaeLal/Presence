@@ -7,10 +7,30 @@ import android.os.Parcelable;
  * Created by Archish on 10/6/2017.
  */
 
-public class UserLoginResponse implements Parcelable{
+public class UserLoginResponse implements Parcelable {
     boolean status;
     String message;
     String accessToken;
+    FacultyProfile facultyProfile;
+    StudentProfile studentProfile;
+
+    protected UserLoginResponse(Parcel in) {
+        status = in.readByte() != 0;
+        message = in.readString();
+        accessToken = in.readString();
+    }
+
+    public static final Creator<UserLoginResponse> CREATOR = new Creator<UserLoginResponse>() {
+        @Override
+        public UserLoginResponse createFromParcel(Parcel in) {
+            return new UserLoginResponse(in);
+        }
+
+        @Override
+        public UserLoginResponse[] newArray(int size) {
+            return new UserLoginResponse[size];
+        }
+    };
 
     public boolean isStatus() {
         return status;
@@ -50,6 +70,8 @@ public class UserLoginResponse implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-
+        dest.writeByte((byte) (status ? 1 : 0));
+        dest.writeString(message);
+        dest.writeString(accessToken);
     }
 }
