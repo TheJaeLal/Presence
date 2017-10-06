@@ -4,7 +4,7 @@ from django.http import HttpResponse
 from django.http import JsonResponse
 import time, hashlib
 from presence.models import Faculty, Student, Course, Attendance
-
+from auth import backend as MyCustomBackend
 
 
 
@@ -14,11 +14,12 @@ def user_login(request):
 
     if request.method =='POST':
 
+        print("Request method is POST")
         #Get the credentials from the request
 
         username = request.POST.get('username')
         password = request.POST.get('password')
-        user_type = request.POST.get('type')
+        user_type = int(request.POST.get('type'))
 
 
         #Initialization..
@@ -28,13 +29,23 @@ def user_login(request):
 
         #Returns reference to user object and corresponding student/faculty object if user exists, returns None otherwise..
 
+        if user_type==1:
+            print("Type==1")
+            print("Trying to authenticate user")
+            print("Authentication returned this: ")
+            user = MyCustomBackend.verify_faculty(authenticate(username = username, password = password))
+            print("Authentication result : user:{}".format(user,faculty))
 
 
-        if type==1:
-            user,faculty = authenticate(username = username, password = password, type = user_type)
+        elif user_type==2:
+            print("Type==2")
+            print("Trying to authenticate user")
+            user= authenticate(username = username, password = password)
+            user = MyCustomBackend.verify_student(authenticate(username = username, password = password))
+            print("Authentication result : user:{}".format(user, faculty))
 
-        elif type==2:
-            user,student = authenticate(username = username, password = password, type = user_type)
+        else:
+            print("Type is not equal to 2 nor equal to 1")
 
         #Creat a response
         response = {
@@ -49,9 +60,10 @@ def user_login(request):
 
         #Check if user exists.. user!=None
         if user:
+            print("User is not null")
             #Check if user is active
             if user.is_active:
-
+                print("User is active")
                 login(request,user)
                 response['success'] = True
                 response['message'] = "Login Successful"
@@ -65,6 +77,7 @@ def user_login(request):
 
                 #Check the type of user, faculty or student?
                 if faculty:
+                    print("User is a faculty")
                     faculty.token = response['token']
                     response['profile'] = faculty
                     response['type'] = 1
@@ -72,6 +85,7 @@ def user_login(request):
 
 
                 elif student:
+                    print('User is a student')
                     student.token = response['tokens']
                     response['profile'] = student
                     response['type'] = 2
@@ -82,11 +96,13 @@ def user_login(request):
 
             #Not active user, i.e account is disabled..
             else:
+                print("User's account has been disabled")
                 response['success'] = False
                 response['message'] = "Account has been Disabled"
 
         #Failed to authenticate, i.e user does not exist...
         else:
+            print("Could not find user")
             print("Invalid login details {0} {1}".format(username,password))
             response['success'] = False
             response['message'] = "Invalid login credentials"
