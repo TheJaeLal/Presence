@@ -35,11 +35,9 @@ import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 public class LoginActivity extends BaseActivity implements LoginContract.LoginView {
 
-    BaseTextView tvForgotPassword, tvCreateAccount;
     BaseEditText etUsername, etPassword;
     BaseButton bLogin;
     LoginPresenter loginPresenter;
-    ProgressDialog _dialog;
     RadioGroup rgType;
     BaseRadioButton rType;
 

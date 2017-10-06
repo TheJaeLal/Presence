@@ -118,7 +118,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
-    public void insertToAttendance(String a_id, String a_day, String a_time_slot) {
+    public void insertToAttendance(int a_id, String a_day, String a_time_slot) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.clear();
