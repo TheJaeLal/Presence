@@ -73,12 +73,12 @@ public class BluetoothDeviceActivity extends AppCompatActivity {
             // Device does not support Bluetooth
             Toast.makeText(getApplicationContext(), "Bluetooth device not found!", Toast.LENGTH_SHORT).show();
         } else {
-
             discover();
         }
+
     }
 
-
+//TODO tid,date,time,studentsList
     private void bluetoothOn() {
         if (!mBTAdapter.isEnabled()) {
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
@@ -116,6 +116,8 @@ public class BluetoothDeviceActivity extends AppCompatActivity {
         if (mBTAdapter.isDiscovering()) {
             mBTAdapter.cancelDiscovery();
             Toast.makeText(getApplicationContext(), "Discovery stopped", Toast.LENGTH_SHORT).show();
+            //TODO Network Call
+
         } else {
             if (mBTAdapter.isEnabled()) {
                 mBTArrayAdapter.clear(); // clear items

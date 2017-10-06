@@ -3,6 +3,7 @@ package com.mjjam.attendanceapp.data.repository;
 import com.mjjam.attendanceapp.data.models.UserLoginResponse;
 import com.mjjam.attendanceapp.data.models.UserResponse;
 
+import retrofit2.http.Field;
 import rx.Observable;
 
 /**
@@ -18,6 +19,7 @@ public interface UserRepository {
     Observable<UserLoginResponse> setLogin(String username, String password, int type);
 
     Observable<UserResponse> logout(String accessToken);
-
+    Observable<UserResponse> getTimeTable(String token);
+    Observable<UserResponse> getTimeTable(String token,String day);
 
 }

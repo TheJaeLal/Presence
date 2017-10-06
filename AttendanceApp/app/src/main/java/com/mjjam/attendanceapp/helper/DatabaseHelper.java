@@ -45,6 +45,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(TimeTable.CREATE);
+        db.execSQL(StudentTable.CREATE);
         //preFillDatabase(db);
     }
 //
@@ -111,7 +112,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 //            editor.putBoolean("versioncode", false);
 //        db.execSQL("DROP TABLE IF EXISTS " + MessageTable.NAME);
         db.execSQL("DROP TABLE IF EXISTS " + TimeTable.NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + StudentTable.NAME);
         db.execSQL(TimeTable.CREATE);
+        db.execSQL(StudentTable.CREATE);
 //        db.execSQL("DROP TABLE IF EXISTS " + BookmarkTable.NAME);
 ////        }
 
@@ -183,8 +186,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return c;
     }
 
-    public ArrayList<MTimeTable> getSadvichar(int position) {
-        Cursor cursor = getSadvicharCursor(position);
+    public ArrayList<MTimeTable> getTimeTable(int position) {
+        Cursor cursor = getTimeTableCursor(position);
         ArrayList<MTimeTable> questions = new ArrayList<>(cursor.getCount());
         do {
             MTimeTable message = getTimeTable1(cursor);
@@ -193,7 +196,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return questions;
     }
 
-    private Cursor getSadvicharCursor(int position) {
+    private Cursor getTimeTableCursor(int position) {
         SQLiteDatabase readableDatabase = this.getReadableDatabase();
         String[] args = new String[1];
         args[0] = position + "";
@@ -205,10 +208,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     private MTimeTable getTimeTable1(Cursor cursor) {
-        final int a_id = cursor.getInt(0);
-        final String a_day = cursor.getString(1);
-        final String a_time = cursor.getString(2);
-        return new MTimeTable(a_id, a_day, a_time);
+        final int aid = cursor.getInt(0);
+        final int a_id = cursor.getInt(1);
+        final String a_day = cursor.getString(2);
+        final String a_time = cursor.getString(3);
+        return new MTimeTable(aid,a_id, a_day, a_time);
     }
 
 
