@@ -40,7 +40,7 @@ def populatedata(request):
         "hod":
             {
                 "username": "mihir.manek",
-                "password": hashlib.sha1("123456".encode('utf-8')).hexdigest(),
+                "password": "123456",
                 "first_name": "Mihir",
                 "last_name": "Manek",
                 "email": "mihir.manek@somaiya.edu",
@@ -70,7 +70,7 @@ def populatedata(request):
     faculties = [
         {
             "username": "jay.lal",
-            "password": hashlib.sha1("123456".encode('utf-8')).hexdigest(),
+            "password": "123456",
             "first_name": "Jay",
             "last_name": "Lal",
             "email": "jay.lal@somaiya.edu",
@@ -78,7 +78,7 @@ def populatedata(request):
         },
         {
             "username": "mehmood.d",
-            "password": hashlib.sha1("123456".encode('utf-8')).hexdigest(),
+            "password": "123456",
             "first_name": "Mehmood",
             "last_name": "Deshmukh",
             "email": "mehmood.d@somaiya.edu",
@@ -124,7 +124,7 @@ def populatedata(request):
     students = [
         {
             "username": "jerin.john",
-            "password": hashlib.sha1("123456".encode('utf-8')).hexdigest(),
+            "password": "123456",
             "first_name": "Jerin",
             "last_name": "John",
             "email": "jerin.john@somaiya.edu",
@@ -135,7 +135,7 @@ def populatedata(request):
         },
         {
             "username": "a.b",
-            "password": hashlib.sha1("123456".encode('utf-8')).hexdigest(),
+            "password": "123456",
             "first_name": "a",
             "last_name": "b",
             "email": "a.b@somaiya.edu",
