@@ -8,5 +8,7 @@
     <string name="font_name_montserrat">montserrat</string>
     <string name="font_name_montserrat_bold">montserrat_bold</string>
     <string name="login">Login</string>
+    <string name="title_activity_student_attendance">StudentAttendance</string>
+    <string name="title_activity_classroom_attendance">ClassroomAttendance</string>
 
 </resources>

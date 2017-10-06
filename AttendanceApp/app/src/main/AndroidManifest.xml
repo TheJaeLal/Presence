@@ -23,6 +23,14 @@
         <activity
             android:name=".TimeTableActivity"
             android:label="@string/title_activity_time_table"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".student.StudentAttendance"
+            android:label="@string/title_activity_student_attendance"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".faculty.ClassroomAttendance"
+            android:label="@string/title_activity_classroom_attendance"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
