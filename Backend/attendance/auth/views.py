@@ -5,7 +5,7 @@ from django.http import JsonResponse
 import time, hashlib
 from presence.models import Faculty, Student, Course, Attendance
 from auth import backend as MyCustomBackend
-
+from django.core.exceptions import ObjectDoesNotExist
 
 
 # Create your views here.
@@ -109,3 +109,19 @@ def user_login(request):
 
         #Send the response as Json
         return JsonResponse(response)
+
+def verify_token(token):
+    user_type=token[0]
+    if(user_type==1):
+        try:
+            faculty=Faculty.objects.get(token=token)
+            return {"type":"FACULTY","object":faculty}
+        except ObjectDoesNotExist as ode:
+            return None
+    elif(user_type==2):
+        try:
+            student=Student.objects.get(token=token)
+            return {"type":"STUDENT","object":student}
+        except ObjectDoesNotExist as ode:
+            return None
+
