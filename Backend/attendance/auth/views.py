@@ -56,7 +56,8 @@ def user_login(request):
                 response['success'] = True
                 response['message'] = "Login Successful"
                 #Creat a string that can be hashed..
-                token_generator = username+str(time.time()).encode()
+                token_generator = username+str(time.time())
+                token_generator = token_generator.encode()
 
                 #Generate hash of the token generator string and assign it to response
                 response['token'] = hashlib.sha1(token_generator).hexdigest()

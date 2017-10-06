@@ -1,5 +1,6 @@
 package com.mjjam.attendanceapp.data.repository;
 
+import com.mjjam.attendanceapp.data.models.UserLoginResponse;
 import com.mjjam.attendanceapp.data.models.UserResponse;
 
 import rx.Observable;
@@ -9,19 +10,13 @@ import rx.Observable;
  */
 
 public interface UserRepository {
-    Observable<UserResponse> setUser(String fcm_token,
-                                     String fname,
-                                     String lname,
-                                     String emailid,
-                                     String phoneno,
-                                     String password,
-                                     int role);
 
 
     Observable<UserResponse> getUser();
 
 
-    Observable<UserResponse> setLogin(String fcm_token, String phoneno, String password);
+    Observable<UserLoginResponse> setLogin(String username, String password, int type);
+
     Observable<UserResponse> logout(String accessToken);
 
 

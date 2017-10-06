@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/home_grey"
+            android:title="@string/home" />
+    </group>
+    <group>
+        <item
+            android:id="@+id/nav_time_table"
+            android:icon="@drawable/timetable"
+            android:title="@string/time_table" />
+    </group>
+    <group>
+        <item
+            android:id="@+id/nav_view_student"
+            android:icon="@drawable/student"
+            android:title="@string/view_student" />
+    </group>
+    <group>
+        <item
+            android:id="@+id/nav_settings"
+            android:icon="@drawable/settings"
+            android:title="@string/settings" />
+    </group>
+
+
+</menu>
