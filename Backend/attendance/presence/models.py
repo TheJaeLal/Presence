@@ -63,6 +63,7 @@ class Student(models.Model):
 	user = models.OneToOneField(User)
 	div = models.ForeignKey(Division)
 	token = models.CharField(max_length=41)
+	contact = models.CharField(max_length=10)
 
 class Attendance(models.Model):
 	lecture = models.ForeignKey(Timetable)
