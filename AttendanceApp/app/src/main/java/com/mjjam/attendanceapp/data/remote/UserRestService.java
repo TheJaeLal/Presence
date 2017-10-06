@@ -1,6 +1,7 @@
 package com.mjjam.attendanceapp.data.remote;
 
 
+import com.mjjam.attendanceapp.data.models.UserLoginResponse;
 import com.mjjam.attendanceapp.data.models.UserResponse;
 
 import retrofit2.http.Field;
@@ -31,12 +32,12 @@ public interface UserRestService {
 
     @FormUrlEncoded
     @POST("auth/login")
-    Observable<UserResponse> setLogin(@Field("fcm_token") String fcm_token, @Field("phoneno") String phoneno, @Field("password") String password);
+    Observable<UserLoginResponse> setLogin(@Field("username") String username, @Field("password") String password,@Field("type") int type );
 
     @FormUrlEncoded
     @POST("auth/logout")
     Observable<UserResponse> logout(@Field("accessToken") String accessToken);
 
 
-    //TODO Login "auth/login" succes token true false
+    //TODO Login "auth/login" success token true false
 }

@@ -7,7 +7,7 @@ import android.os.Parcelable;
  * Created by Archish on 10/6/2017.
  */
 
-public class UserResponse  implements Parcelable{
+public class UserResponse implements Parcelable{
     boolean status;
     String message;
 
