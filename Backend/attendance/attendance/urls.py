@@ -17,13 +17,14 @@ from django.contrib import admin
 from django.conf.urls import url
 from rest_framework_swagger.views import get_swagger_view
 from attendance import views
+from attendance import mockdata
 
 schema_view = get_swagger_view(title='Presence API')
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^docs', schema_view),
-    url(r'^data/populate', views.populatedata),
+    url(r'^data/populate', mockdata.populatedata),
 ]
 
 
