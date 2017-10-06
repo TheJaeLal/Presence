@@ -11,8 +11,35 @@ public class UserLoginResponse implements Parcelable {
     boolean status;
     String message;
     String accessToken;
+    int category;
+
     FacultyProfile facultyProfile;
     StudentProfile studentProfile;
+
+    public int getCategory() {
+        return category;
+    }
+
+    public void setCategory(int category) {
+        this.category = category;
+    }
+
+    public FacultyProfile getFacultyProfile() {
+        return facultyProfile;
+    }
+
+    public void setFacultyProfile(FacultyProfile facultyProfile) {
+        this.facultyProfile = facultyProfile;
+    }
+
+    public StudentProfile getStudentProfile() {
+        return studentProfile;
+    }
+
+    public void setStudentProfile(StudentProfile studentProfile) {
+        this.studentProfile = studentProfile;
+    }
+
 
     protected UserLoginResponse(Parcel in) {
         status = in.readByte() != 0;
