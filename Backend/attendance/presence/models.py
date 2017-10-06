@@ -10,7 +10,7 @@ class Faculty(models.Model):
 
 class Department(models.Model):
 	name = models.CharField(max_length=25)
-	hod = models.ForeignKey(Faculty)
+	faculty = models.ForeignKey(Faculty)
 
 class Semester(models.Model):
 	semester = models.IntegerField()
@@ -44,22 +44,19 @@ class Lecture(models.Model):
 	lecturer = models.ForeignKey(Faculty)
 	div = models.ForeignKey(Division)
 
-class Slot(models.Model):
-	WEEKDAYS = (
-		('1','Monday'),
-		('2','Tuesday'),
-		('3','Wednesday'),
-		('4','Thursday'),
-		('5','Firday'),
-		('6','Saturday'),
-		)
-	day = models.CharField(max_length=1,choices=WEEKDAYS)
-	start = models.TimeField()
-	duration = models.IntegerField()
-
 class Timetable(models.Model):
 	lecture = models.ForeignKey(Lecture)
-	slot = models.ForeignKey(Slot)
+	WEEKDAYS = (
+		('1', 'Monday'),
+		('2', 'Tuesday'),
+		('3', 'Wednesday'),
+		('4', 'Thursday'),
+		('5', 'Friday'),
+		('6', 'Saturday'),
+	)
+	day = models.CharField(max_length=1, choices=WEEKDAYS)
+	start = models.TimeField()
+	duration = models.IntegerField()
 
 class Student(models.Model):
 	roll_no = models.IntegerField(primary_key=True)

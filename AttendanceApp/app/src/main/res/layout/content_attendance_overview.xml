@@ -21,7 +21,6 @@
         android:layout_height="0dp"
         android:layout_margin="10dp"
         android:layout_weight="1"
-        android:="Select Month"
         android:spinnerMode="dialog" />
 
         <LinearLayout
@@ -36,7 +35,6 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:layout_weight="0.5"
-            android:prompt="Select Course"
             android:spinnerMode="dialog" />
 
         <android.support.v7.widget.AppCompatSpinner
@@ -46,7 +44,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:layout_weight="0.5"
-            android:prompt="Select Course"
+
             android:spinnerMode="dialog" />
     </LinearLayout>
 
