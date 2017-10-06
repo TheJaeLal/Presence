@@ -10,5 +10,6 @@
     <string name="login">Login</string>
     <string name="title_activity_student_attendance">StudentAttendance</string>
     <string name="title_activity_classroom_attendance">ClassroomAttendance</string>
+    <string name="title_activity_attendance_overview">AttendanceOverview</string>
 
 </resources>

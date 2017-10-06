@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="10">
+
+    <com.mjjam.attendanceapp.widgets.BaseTextView
+        style="@style/PrimaryText"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="10dp"
+        android:layout_weight="1"
+        android:text="Attendance Overview"
+        android:textSize="25sp" />
+
+    <android.support.v7.widget.AppCompatSpinner
+        android:id="@+id/spSelectCourse"
+        style="@style/PrimaryText"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="10dp"
+        android:layout_weight="1"
+        android:prompt="Select Month"
+        android:spinnerMode="dialog" />
+
+        <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <android.support.v7.widget.AppCompatSpinner
+            android:id="@+id/spSelectClass"
+            style="@style/PrimaryText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_weight="0.5"
+            android:prompt="Select Course"
+            android:spinnerMode="dialog" />
+
+        <android.support.v7.widget.AppCompatSpinner
+            android:id="@+id/spSelectMonth"
+            style="@style/PrimaryText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_weight="0.5"
+            android:prompt="Select Course"
+            android:spinnerMode="dialog" />
+    </LinearLayout>
+
+    <com.mjjam.attendanceapp.widgets.BaseTextView
+        android:id="@+id/tvOverallAttendance"
+        style="@style/PrimaryText"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="10dp"
+        android:layout_weight="1"
+        android:text="Overall :"
+        android:textSize="20sp" />
+
+</LinearLayout>
