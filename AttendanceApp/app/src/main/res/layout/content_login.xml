@@ -1,0 +1,82 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimaryDark"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:padding="20dp"
+    tools:context="com.mjjam.attendanceapp.LoginActivity">
+
+    <com.mjjam.attendanceapp.widgets.BaseTextView
+        android:id="@+id/tvTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:padding="20dp"
+        android:text="Presence App Account"
+        android:textSize="30sp" />
+
+    <com.mjjam.attendanceapp.widgets.BaseEditText
+        android:id="@+id/etEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvTitle"
+        android:layout_marginTop="40dp"
+        android:hint="Enter email.."
+        android:padding="25dp"
+        android:text="Mit"
+        android:textColor="@color/colorAccent"
+        android:textColorHint="#006064" />
+
+    <com.mjjam.attendanceapp.widgets.BaseEditText
+        android:id="@+id/etPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/etEmail"
+        android:hint="Enter password.."
+        android:inputType="textPassword"
+        android:padding="25dp"
+        android:textColor="@color/colorAccent"
+        android:textColorHint="#006064" />
+
+    <LinearLayout
+        android:id="@+id/llLoginOption"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/etPassword"
+        android:orientation="horizontal">
+
+        <com.mjjam.attendanceapp.widgets.BaseRadioButton
+            android:id="@+id/rbAsTeacher"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:text="As Teacher"
+            android:textSize="20sp" />
+
+        <com.mjjam.attendanceapp.widgets.BaseRadioButton
+            android:id="@+id/rbAsStudent"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:text="As Student"
+            android:textSize="20sp" />
+
+    </LinearLayout>
+
+    <com.mjjam.attendanceapp.widgets.BaseButton
+        android:id="@+id/bLogin"
+        android:layout_below="@+id/llLoginOption"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:padding="10dp"
+        android:background="@color/colorAccent"
+        android:elevation="10dp"
+        android:text="Login"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+
+</RelativeLayout>
