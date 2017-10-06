@@ -3,6 +3,11 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 
+class Faculty(models.Model):
+	user = models.OneToOneField(User)
+	contact = models.IntegerField()
+	token = models.CharField(max_length=41)
+
 class Department(models.Model):
 	name = models.CharField(max_length=25)
 	hod = models.ForeignKey(Faculty)
@@ -29,10 +34,6 @@ class Division(models.Model):
 	# divisions = ('A','B')
 	div = models.CharField(max_length=1)#,choices=divisions)
 
-class Faculty(models.Model):
-	user = models.OneToOneField(User)
-	contact = models.IntegerField()
-	token = models.CharField(max_length=41)
 
 class Course(models.Model):
 	name = models.CharField(max_length=20)
@@ -54,13 +55,19 @@ class Slot(models.Model):
 		)
 	day = models.CharField(max_length=1,choices=WEEKDAYS)
 	start = models.TimeField()
-	
+	duration = models.IntegerField()
+
 class Timetable(models.Model):
 	lecture = models.ForeignKey(Lecture)
+	slot = models.ForeignKey(Slot)
 
+class Student(models.Model):
+	roll_no = models.IntegerField(primary_key=True)
+	user = models.OneToOneField(User)
+	div = models.ForeignKey(Division)
+	token = models.CharField(max_length=41)
 
-
-# class Student(models.Model):
-# 	roll_no = models.IntegerField(primary_key=True)
-# 	name = models.CharField()
-# 	class = models.ForeignKey(Class)
+class Attendance(models.Model):
+	lecture = models.ForeignKey(Timetable)
+	student = models.ForeignKey(Student)
+	date = models.DateField()
