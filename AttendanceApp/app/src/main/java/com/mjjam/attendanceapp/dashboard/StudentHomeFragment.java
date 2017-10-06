@@ -24,7 +24,6 @@ public class StudentHomeFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    private BluetoothAdapter bluetoothAdapter = null;
 
     private OnFragmentInteractionListener mListener;
 
@@ -84,18 +83,6 @@ public class StudentHomeFragment extends Fragment {
         }
     }
 
-    public void ChangeBTName(int status) {
-        bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        if (status == 1) {
-            String defaultName = bluetoothAdapter.getName();
-            bluetoothAdapter.enable();
-            if (bluetoothAdapter.getState() == BluetoothAdapter.STATE_ON) {
-                bluetoothAdapter.setName(""); //Set RollNo_RollingOTP as temporary device name
-            }
-        } else {
-            bluetoothAdapter.setName(defaultName);
-
-        }
     @Override
     public void onDetach() {
         super.onDetach();
