@@ -12,6 +12,24 @@ public class UserLoginResponse implements Parcelable{
     String message;
     String accessToken;
 
+    protected UserLoginResponse(Parcel in) {
+        status = in.readByte() != 0;
+        message = in.readString();
+        accessToken = in.readString();
+    }
+
+    public static final Creator<UserLoginResponse> CREATOR = new Creator<UserLoginResponse>() {
+        @Override
+        public UserLoginResponse createFromParcel(Parcel in) {
+            return new UserLoginResponse(in);
+        }
+
+        @Override
+        public UserLoginResponse[] newArray(int size) {
+            return new UserLoginResponse[size];
+        }
+    };
+
     public boolean isStatus() {
         return status;
     }
@@ -50,6 +68,8 @@ public class UserLoginResponse implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-
+        dest.writeByte((byte) (status ? 1 : 0));
+        dest.writeString(message);
+        dest.writeString(accessToken);
     }
 }

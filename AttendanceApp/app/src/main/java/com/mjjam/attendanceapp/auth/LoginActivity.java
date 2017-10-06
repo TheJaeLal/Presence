@@ -35,11 +35,9 @@ import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 public class LoginActivity extends BaseActivity implements LoginContract.LoginView {
 
-    BaseTextView tvForgotPassword, tvCreateAccount;
     BaseEditText etUsername, etPassword;
     BaseButton bLogin;
     LoginPresenter loginPresenter;
-    ProgressDialog _dialog;
     RadioGroup rgType;
     BaseRadioButton rType;
 
@@ -78,7 +76,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.LoginVi
     private int checkType() {
         int selectedId = rgType.getCheckedRadioButtonId();
         rType = (BaseRadioButton) findViewById(selectedId);
-        if(rType.getText().toString().equals(getString(R.string.as_teacher)))
+        if (rType.getText().toString().equals(getString(R.string.as_teacher)))
             return 1;
         return 2;
     }
@@ -97,7 +95,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.LoginVi
             new SharedPreferenceManager(getApplicationContext()).saveMainPage(1);
             new SharedPreferenceManager(getApplicationContext()).saveAccessToken(userLoginResponse.getAccessToken());
             new SharedPreferenceManager(getApplicationContext()).saveAccessToken(userLoginResponse.getAccessToken());
-            new SharedPreferenceManager(getApplicationContext()).saveCategory(Integer.parseInt(String.valueOf(userLoginResponse.getAccessToken());
+            new SharedPreferenceManager(getApplicationContext()).saveCategory(Integer.parseInt(String.valueOf(userLoginResponse.getAccessToken())));
             Intent i = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(i);
             finish();
@@ -114,7 +112,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.LoginVi
 
     private boolean validate() {
         if (etUsername.getText().toString().isEmpty()) {
-            etUsername.setError("Mobile number cannot be empty");
+            etUsername.setError("Username cannot be empty");
             etUsername.setFocusable(true);
             return false;
         } else if (etPassword.getText().toString().isEmpty()) {
