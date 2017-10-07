@@ -8,6 +8,8 @@ import com.mjjam.attendanceapp.data.models.UserResponse;
 import com.mjjam.attendanceapp.data.repository.UserRepository;
 import com.mjjam.attendanceapp.timetable.TimeTableContracts;
 
+import okhttp3.ResponseBody;
+import retrofit2.Response;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -31,7 +33,7 @@ public class TimeTablePresenter implements TimeTableContracts.TimePresenter {
                 .getTimeTable(token, day)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.newThread())
-                .subscribe(new Observer<UserResponse>() {
+                .subscribe(new Observer<Response<ResponseBody>>() {
                     @Override
                     public void onCompleted() {
                         Log.d("UserMessageComplete", "Complete");
@@ -46,12 +48,11 @@ public class TimeTablePresenter implements TimeTableContracts.TimePresenter {
                     }
 
                     @Override
-                    public void onNext(UserResponse userResponse) {
+                    public void onNext(Response<ResponseBody> responseBodyResponse) {
                         if (view != null)
-                            view.onData(userResponse);
+                            view.onData(responseBodyResponse);
 
                     }
-
                 });
 
 
@@ -63,7 +64,7 @@ public class TimeTablePresenter implements TimeTableContracts.TimePresenter {
                 .getTimeTable(token)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.newThread())
-                .subscribe(new Observer<UserResponse>() {
+                .subscribe(new Observer<Response<ResponseBody>>() {
                     @Override
                     public void onCompleted() {
                         Log.d("UserMessageComplete", "Complete");
@@ -78,12 +79,11 @@ public class TimeTablePresenter implements TimeTableContracts.TimePresenter {
                     }
 
                     @Override
-                    public void onNext(UserResponse userResponse) {
+                    public void onNext(Response<ResponseBody> responseBodyResponse) {
                         if (view != null)
-                            view.onData(userResponse);
+                            view.onData(responseBodyResponse);
 
                     }
-
                 });
 
     }

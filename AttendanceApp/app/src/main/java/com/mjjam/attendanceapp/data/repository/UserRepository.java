@@ -4,6 +4,8 @@ import com.mjjam.attendanceapp.data.models.AttendanceResponse;
 import com.mjjam.attendanceapp.data.models.UserLoginResponse;
 import com.mjjam.attendanceapp.data.models.UserResponse;
 
+import okhttp3.ResponseBody;
+import retrofit2.Response;
 import retrofit2.http.Field;
 import rx.Observable;
 
@@ -19,10 +21,14 @@ public interface UserRepository {
 
     Observable<UserLoginResponse> setLogin(String username, String password, int type);
 
-    Observable<UserResponse> getTimeTable(String token);
+    Observable<Response<ResponseBody>> getTimeTable(String token);
+
     Observable<UserResponse> getTimeTableData(String token);
-    Observable<UserResponse> getTimeTable(String token,String day);
-    Observable<UserResponse> sendData(String token,String mark);
+
+    Observable<Response<ResponseBody>> getTimeTable(String token, String day);
+
+    Observable<UserResponse> sendData(String token, String mark);
+
     Observable<AttendanceResponse> attendanceQuery(int rollNo, String month, String courseName);
 
 

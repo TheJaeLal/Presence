@@ -73,10 +73,14 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         //How to change elements in the header programatically
         View headerView = navigationView.getHeaderView(0);
         TextView role = (TextView) headerView.findViewById(R.id.email);
-        if (new SharedPreferenceManager(getApplicationContext()).getCategory() == 1)
+        TextView username = (TextView) headerView.findViewById(R.id.username);
+        if (new SharedPreferenceManager(getApplicationContext()).getCategory() == 1) {
             role.setText(getString(R.string.as_teacher));
-        else if (new SharedPreferenceManager(getApplicationContext()).getCategory() == 2)
+            username.setText(new SharedPreferenceManager(getApplicationContext()).getUserName());
+        } else if (new SharedPreferenceManager(getApplicationContext()).getCategory() == 2) {
             role.setText(getString(R.string.as_student));
+            username.setText(new SharedPreferenceManager(getApplicationContext()).getUserName());
+        }
 
         navigationView.setNavigationItemSelectedListener(this);
         if (new SharedPreferenceManager(getApplicationContext()).getCategory() == 1) {
