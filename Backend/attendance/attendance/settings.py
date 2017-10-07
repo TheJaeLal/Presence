@@ -25,7 +25,7 @@ SECRET_KEY = 'n-0d8t3^=#fgc-9#$7eo6bd+#-@^jz#yut$q8mmvx0^khz9cgo'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['presence-backend.herokuapp.com']
+ALLOWED_HOSTS = ['presence-backend.herokuapp.com','192.168.127.183']
 
 
 # Application definition

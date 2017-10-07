@@ -47,7 +47,7 @@ def get_day_from_index(index):
 	return days[int(index)-1]
 
 def get_end_time(time,duration):
-    return t.replace(hour=t.hour+int(duration))
+    return time.replace(hour=time.hour+int(duration))
 
 def __get_attendance(roll_no,course_name,month_name):
     count_for_div_for_month_for_course = None
@@ -60,7 +60,7 @@ def __get_attendance(roll_no,course_name,month_name):
 
     try:
         student = models.Student.objects.get(roll_no = roll_no)
-        # print(student)
+        print(student)
 
     except models.Student.DoesNotExist:
         print("Student does not exist, error occured inside __get_attendance in views.py")
@@ -71,16 +71,14 @@ def __get_attendance(roll_no,course_name,month_name):
         #Filter for student
 
         attendance_list_for_student = models.Attendance.objects.filter(student=student)
-        # print(attendance_list_for_student)
+        print(attendance_list_for_student)
 
     except models.Attendance.DoesNotExist:
         print("No attendance record for student, means he was present for none of the lectures")
         return 0,0
 
-        #Filter for month
-        # attendance_list_for_student_for_month = [a for a in attendance_list_for_student if a.date__month == month_no]
-
     print("WHat the fuck?")
+
     attendance_list_for_student_for_month = attendance_list_for_student.filter(period__date__month=month_no)
     count_for_student_for_month = len(attendance_list_for_student_for_month)
     count_for_div_for_month = len(Period.objects.filter(timetable__lecture__div=student.div))

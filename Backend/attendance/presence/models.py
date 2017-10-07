@@ -70,5 +70,5 @@ class Period(models.Model):
 	date = models.DateField()
 
 class Attendance(models.Model):
-	period = models.ForeignKey(Period)
+	period = models.ForeignKey(Period,default=0)
 	student = models.ForeignKey(Student)
