@@ -48,7 +48,7 @@ public interface UserRestService {
     Observable<UserResponse> getTimeTable(@Field("token") String token);
 
     @FormUrlEncoded
-    @POST("markattendance")
+    @POST("attend/mark")
     Observable<UserResponse> sendData(@Field("token") String token, @Field("mark") String mark);
 
     @FormUrlEncoded
