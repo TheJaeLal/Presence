@@ -35,4 +35,4 @@ def get_epoch(date,time):
 	date = date_from_string(date)
 	time = time_from_string(time)
 	dt = datetime.datetime.combine(date,time)
-	return int((dt - EPOCH).total_seconds() * 1000)
+	return int((dt - EPOCH).total_seconds()/10)
