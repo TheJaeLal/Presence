@@ -122,10 +122,22 @@ def get_unix(time):
     #Convert provided time_stamp into unix time..
     #Time is in format hh:mm 24 hour format...
 
-
-
     return time_stamp
 
 
+#Return attendance in percentage
+def get_attendance(request):
 
+    response = {
+        'percentage'
+    }
+    if request.method=='POST':
+        course_name = request.POST.get('course')
+        roll_no = request.POST.get('roll_no')
+        month_name = request.POST.get('month')
+
+
+
+
+def __get_attendance(roll_no,course_name,month_name)
 
