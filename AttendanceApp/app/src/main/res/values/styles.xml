@@ -55,6 +55,13 @@
         <item name="android:textColor">@android:color/white</item>
         <item name="font">@string/font_name_montserrat</item>
     </style>
+    <style name="BaseAccentButton" parent="Widget.AppCompat.Button">
+        <item name="android:gravity">center_vertical|center_horizontal</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:background">@drawable/button_state</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="font">@string/font_name_montserrat</item>
+    </style>
 
     <style name="BaseRadioButton" parent="Widget.AppCompat.CompoundButton.RadioButton">
 

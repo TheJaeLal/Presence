@@ -39,16 +39,11 @@ public class LectureAttendance extends AsyncTask<Void, Void, String> {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public String HashGenerator() {
+    public String HashGenerator(String time) {
         prefs = new SharedPreferenceManager(context);
         String SHAHash = "";
-        long epochTime = System.currentTimeMillis();
-//        Date currentTime = Calendar.getInstance().getTime();
-//        DateTime dateTimeInUtc = new DateTime( "2011-07-19T18:23:20+0000", DateTimeZone.UTC );
-//        long secondsSinceUnixEpoch = ( currentTime.getMillis() / 1000 ); // Convert milliseconds to seconds.
-//        SimpleDateFormat format = new SimpleDateFormat("hh:mm");
-//        format.format(currentTime);
-        String custom_checksum = prefs.getAccessToken() + String.valueOf(epochTime/10000); // Change to start time
+
+        String custom_checksum = prefs.getAccessToken() + time;
         MessageDigest mdSha1 = null;
         try {
             URLEncoder.encode(custom_checksum, "utf-8");
@@ -84,7 +79,7 @@ public class LectureAttendance extends AsyncTask<Void, Void, String> {
             defaultName = bluetoothAdapter.getName();
             bluetoothAdapter.enable();
             if (bluetoothAdapter.getState() == BluetoothAdapter.STATE_ON) {
-                String temp_identifier = String.valueOf(prefs.getRollNo()) + "_" + HashGenerator();
+                String temp_identifier = String.valueOf(prefs.getRollNo()) + "_" + HashGenerator("12.55");
                 bluetoothAdapter.setName(temp_identifier);
             }
         } else {

@@ -33,6 +33,7 @@ import com.mjjam.attendanceapp.R;
 import com.mjjam.attendanceapp.common.ConnectionDetector;
 import com.mjjam.attendanceapp.data.models.UserResponse;
 import com.mjjam.attendanceapp.helper.DatabaseHelper;
+import com.mjjam.attendanceapp.widgets.BaseButton;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -58,6 +59,7 @@ public class MarkAttendanceFragment extends Fragment implements MarkAttendanceCo
     private Set<BluetoothDevice> mPairedDevices;
     private ArrayAdapter<String> mBTArrayAdapter;
     private ListView mDevicesListView;
+    BaseButton bRefresh;
     private ConnectedThread mConnectedThread;
     HashSet<String> btDevices;
 
@@ -77,8 +79,16 @@ public class MarkAttendanceFragment extends Fragment implements MarkAttendanceCo
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.activity_main_bt,container,false);
+        View view = inflater.inflate(R.layout.activity_main_bt, container, false);
         mDevicesListView = (ListView) view.findViewById(R.id.listView);
+        bRefresh = (BaseButton) view.findViewById(R.id.bRefresh);
+        bRefresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getActivity().getApplicationContext(), "Please Wait...", Toast.LENGTH_SHORT).show();
+                discover();
+            }
+        });
         btDevices = new HashSet<>();
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
             ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
@@ -134,7 +144,7 @@ public class MarkAttendanceFragment extends Fragment implements MarkAttendanceCo
         // Check if the device is already discovering
         if (mBTAdapter.isDiscovering()) {
             mBTAdapter.cancelDiscovery();
-            Toast.makeText(getActivity().getApplicationContext(), "Discovery stopped", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getActivity().getApplicationContext(), "Discovery stopped", Toast.LENGTH_SHORT).show();
             //TODO Network Call
             if (new ConnectionDetector(getActivity().getApplicationContext()).isConnectingToInternet())
                 onlinePushData();
@@ -144,10 +154,10 @@ public class MarkAttendanceFragment extends Fragment implements MarkAttendanceCo
             if (mBTAdapter.isEnabled()) {
                 mBTArrayAdapter.clear(); // clear items
                 mBTAdapter.startDiscovery();
-                Toast.makeText(getActivity().getApplicationContext(), "Discovery started", Toast.LENGTH_SHORT).show();
+                //  Toast.makeText(getActivity().getApplicationContext(), "Discovery started", Toast.LENGTH_SHORT).show();
                 getActivity().registerReceiver(blReceiver, new IntentFilter(BluetoothDevice.ACTION_FOUND));
             } else {
-                Toast.makeText(getActivity().getApplicationContext(), "Bluetooth not on", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getActivity().getApplicationContext(), "Bluetooth not on", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -172,7 +182,8 @@ public class MarkAttendanceFragment extends Fragment implements MarkAttendanceCo
             if (BluetoothDevice.ACTION_FOUND.equals(action)) {
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                 // add the name to the list
-                mBTArrayAdapter.add(device.getName());
+                if (device.getName() != null && device.getName().contains("_"))
+                    mBTArrayAdapter.add(device.getName());
                 btDevices.add(device.getName());
                 mBTArrayAdapter.notifyDataSetChanged();
             }

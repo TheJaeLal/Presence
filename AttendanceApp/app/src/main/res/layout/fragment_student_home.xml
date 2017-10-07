@@ -1,71 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <android.support.design.widget.AppBarLayout
-        android:id="@+id/appbar"
+    <android.support.v7.widget.CardView
+        android:id="@+id/card_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
-        android:fitsSystemWindows="true">
+        android:layout_margin="8dp">
 
-        <android.support.design.widget.CollapsingToolbarLayout
-            android:id="@+id/collapsing_toolbar"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fitsSystemWindows="true"
-            app:expandedTitleMarginEnd="64dp"
-            app:expandedTitleMarginStart="48dp"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="8dp">
 
-            <android.support.v7.widget.CardView
-                android:id="@+id/card_view"
+            <com.mjjam.attendanceapp.widgets.BaseTextView
+                style="@style/PrimaryText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp">
+                android:text="Current Lecture"
+                android:textSize="18sp"
+                android:textColor="@color/colorAccent" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="8dp">
+            <com.mjjam.attendanceapp.widgets.BaseTextView
+                android:id="@+id/tvSName"
+                style="@style/PrimaryText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp" />
 
-                    <com.mjjam.attendanceapp.widgets.BaseTextView
-                        style="@style/PrimaryText"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Current Lecture"
-                        android:textColor="@color/colorAccent" />
+            <com.mjjam.attendanceapp.widgets.BaseTextView
+                android:id="@+id/tvSTime"
+                style="@style/SecondaryText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
 
-                    <com.mjjam.attendanceapp.widgets.BaseTextView
-                        android:id="@+id/tvSName"
-                        style="@style/PrimaryText"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textSize="18sp" />
-
-                    <com.mjjam.attendanceapp.widgets.BaseTextView
-                        android:id="@+id/tvSTime"
-                        style="@style/SecondaryText"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
-                </LinearLayout>
-            </android.support.v7.widget.CardView>
-        </android.support.design.widget.CollapsingToolbarLayout>
-    </android.support.design.widget.AppBarLayout>
-
-    <android.support.v4.widget.NestedScrollView
+<com.mjjam.attendanceapp.widgets.BaseTextView
+    android:padding="8dp"
+    style="@style/PrimaryText"
+    android:textColor="@color/colorAccent"
+    android:text="Upcoming Lectures"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" />
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rvLectures"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        android:layout_height="match_parent" />
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rvLectures"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </android.support.v4.widget.NestedScrollView>
-</android.support.design.widget.CoordinatorLayout>
+</LinearLayout>

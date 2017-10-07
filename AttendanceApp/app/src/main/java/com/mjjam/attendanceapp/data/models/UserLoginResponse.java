@@ -3,6 +3,8 @@ package com.mjjam.attendanceapp.data.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.ArrayList;
+
 /**
  * Created by Archish on 10/6/2017.
  */
@@ -14,7 +16,25 @@ public class UserLoginResponse implements Parcelable {
     int type;
     int rollno;
     String firstname;
+    String username;
     String lastname;
+    ArrayList<String> courses;
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public ArrayList<String> getCourses() {
+        return courses;
+    }
+
+    public void setCourses(ArrayList<String> courses) {
+        this.courses = courses;
+    }
 
     public int getRollno() {
         return rollno;

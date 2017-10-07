@@ -24,17 +24,18 @@
         android:orientation="horizontal"
         android:padding="8dp">
 
-        <RadioButton
+        <com.mjjam.attendanceapp.widgets.BaseRadioButton
             android:id="@+id/rbWeek"
-            style="@style/BaseRadioButton"
+            style="@style/PrimaryText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:checked="true"
             android:text="@string/week_schedule" />
 
-        <RadioButton
+        <com.mjjam.attendanceapp.widgets.BaseRadioButton
             android:id="@+id/rbDay"
-            style="@style/BaseRadioButton"
+            style="@style/PrimaryText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -46,6 +47,7 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_marginTop="20dp"
+        android:visibility="gone"
         android:entries="@array/week" />
 
     <com.mjjam.attendanceapp.widgets.BaseButton

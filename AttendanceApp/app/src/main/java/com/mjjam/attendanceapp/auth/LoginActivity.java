@@ -89,21 +89,21 @@ public class LoginActivity extends BaseActivity implements LoginContract.LoginVi
     @Override
     public void onLogin(UserLoginResponse userLoginResponse) {
         dismissProgressDialog();
-        if (userLoginResponse.isStatus()) {
+        if (userLoginResponse.isSuccess()) {
             new SharedPreferenceManager(getApplicationContext()).saveMainPage(1);
-            new SharedPreferenceManager(getApplicationContext()).saveAccessToken(userLoginResponse.getAccessToken());
-            new SharedPreferenceManager(getApplicationContext()).saveCategory(userLoginResponse.getCategory());
-            new SharedPreferenceManager(getApplicationContext()).saveCourseList(userLoginResponse.getCourseList());
+            new SharedPreferenceManager(getApplicationContext()).saveAccessToken(userLoginResponse.getToken());
+            new SharedPreferenceManager(getApplicationContext()).saveCategory(userLoginResponse.getType());
+            new SharedPreferenceManager(getApplicationContext()).saveCourseList(userLoginResponse.getCourses());
 
-            if (userLoginResponse.getCategory() == 1) {
-                new SharedPreferenceManager(getApplicationContext()).saveFirstName(userLoginResponse.getFacultyProfile().getUser().getFirst_name());
-                new SharedPreferenceManager(getApplicationContext()).saveLastName(userLoginResponse.getFacultyProfile().getUser().getLast_name());
-                new SharedPreferenceManager(getApplicationContext()).saveUserName(userLoginResponse.getFacultyProfile().getUser().getEmail());
+            if (userLoginResponse.getType() == 1) {
+                new SharedPreferenceManager(getApplicationContext()).saveFirstName(userLoginResponse.getFirstname());
+                new SharedPreferenceManager(getApplicationContext()).saveLastName(userLoginResponse.getLastname());
+                new SharedPreferenceManager(getApplicationContext()).saveUserName(userLoginResponse.getUsername());
             } else {
-                new SharedPreferenceManager(getApplicationContext()).saveFirstName(userLoginResponse.getStudentProfile().getUser().getFirst_name());
-                new SharedPreferenceManager(getApplicationContext()).saveLastName(userLoginResponse.getStudentProfile().getUser().getLast_name());
-                new SharedPreferenceManager(getApplicationContext()).saveRollNo(userLoginResponse.getStudentProfile().getRoll_no());
-                new SharedPreferenceManager(getApplicationContext()).saveUserName(userLoginResponse.getStudentProfile().getUser().getEmail());
+                new SharedPreferenceManager(getApplicationContext()).saveFirstName(userLoginResponse.getFirstname());
+                new SharedPreferenceManager(getApplicationContext()).saveLastName(userLoginResponse.getLastname());
+                new SharedPreferenceManager(getApplicationContext()).saveRollNo(userLoginResponse.getRollno());
+                new SharedPreferenceManager(getApplicationContext()).saveUserName(userLoginResponse.getUsername());
             }
             Intent i = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(i);
@@ -114,10 +114,6 @@ public class LoginActivity extends BaseActivity implements LoginContract.LoginVi
 
     }
 
-    @Override
-    public void onLogout(UserResponse userResponse) {
-
-    }
 
     private boolean validate() {
         if (etUsername.getText().toString().isEmpty()) {
