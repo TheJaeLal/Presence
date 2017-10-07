@@ -137,16 +137,16 @@ def get_attendance(request):
 
     response = {
         'success':False,
-        'month':None,
-        'course':None
+        'overall_apc':None,
+        'course_apc':None
     }
     if request.method=='POST':
         course_name = request.POST.get('course')
         roll_no = int(request.POST.get('roll_no'))
         month_name = request.POST.get('month')
 
-        response['month'],response['course'] = __get_attendance(roll_no,course_name,month_name)
-        if response['month'] and response['course']:
+        response['overall_apc'],response['course_apc'] = __get_attendance(roll_no,course_name,month_name)
+        if response['overall_apc'] and response['course_apc']:
             response['success'] = True
 
     return JsonResponse(response)
