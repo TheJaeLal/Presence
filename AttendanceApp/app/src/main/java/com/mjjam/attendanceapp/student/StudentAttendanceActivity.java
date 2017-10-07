@@ -24,28 +24,27 @@ public class StudentAttendanceActivity extends AppCompatActivity implements Stud
     private ArrayList<String> courseList;
     private String month, course;
     private SharedPreferenceManager prefs;
+    StudentAttendancePresenter studentAttendancePresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_attendance);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
         final Spinner monthSelector = (Spinner) findViewById(R.id.spSelectMonth);
-        final Spinner courseSelector = (Spinner) findViewById(R.id.spSelectMonth);
+        final Spinner courseSelector = (Spinner) findViewById(R.id.spSelectCourse);
 
         this.monthList = new String[]{"Select Month", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
         this.courseList = new SharedPreferenceManager(this).getCourseList();
         this.courseList.add(0, "Select Course");
 
-        ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(this, R.layout.activity_attendance, monthList);
+        ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, monthList);
         monthSelector.setAdapter(adapter1);
-        ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(this, R.layout.activity_attendance, courseList);
+        ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, courseList);
         courseSelector.setAdapter(adapter2);
 
         UserRepository userRepository = ((AttendanceApp) getApplication()).getComponent().userRepository();
-        final StudentAttendancePresenter studentAttendancePresenter = new StudentAttendancePresenter(userRepository, (StudentAttendanceContract.StudentAttendanceView) this);
+        studentAttendancePresenter = new StudentAttendancePresenter(userRepository, this);
         prefs = new SharedPreferenceManager(getApplicationContext());
 
         monthSelector.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -54,7 +53,7 @@ public class StudentAttendanceActivity extends AppCompatActivity implements Stud
                 //Add query to fetch student monthly attendance
                 if (position != 0) {
                     month = monthSelector.getItemAtPosition(position).toString();
-                    studentAttendancePresenter.fetchData(prefs.getRollNo(), month, null);
+                    studentAttendancePresenter.fetchData(prefs.getRollNo(), month, "");
                 }
             }
 
@@ -73,7 +72,7 @@ public class StudentAttendanceActivity extends AppCompatActivity implements Stud
                     course = courseSelector.getItemAtPosition(position).toString();
                     studentAttendancePresenter.fetchData(prefs.getRollNo(), month, course);
                 } else {
-                    Toast.makeText(getApplicationContext(), "Select Month First..", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Select Month First", Toast.LENGTH_LONG).show();
                 }
             }
 

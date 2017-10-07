@@ -5,10 +5,13 @@ import com.mjjam.attendanceapp.data.models.AttendanceResponse;
 import com.mjjam.attendanceapp.data.models.UserLoginResponse;
 import com.mjjam.attendanceapp.data.models.UserResponse;
 
+import okhttp3.ResponseBody;
+import retrofit2.Response;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Streaming;
 import rx.Observable;
 
 
@@ -40,12 +43,18 @@ public interface UserRestService {
 
 
     @FormUrlEncoded
-    @POST("timetable")
-    Observable<UserResponse> getTimeTable(@Field("token") String token, @Field("day") String day);
+    @POST("core/schedule/pdf")
+    @Streaming
+    Observable<Response<ResponseBody>> getTimeTable(@Field("token") String token, @Field("day") String day);
 
     @FormUrlEncoded
-    @POST("timetable")
-    Observable<UserResponse> getTimeTable(@Field("token") String token);
+    @POST("core/schedule/pdf")
+    @Streaming
+    Observable<Response<ResponseBody>> getTimeTable(@Field("token") String token);
+
+    @FormUrlEncoded
+    @POST("core/schedule/pdf")
+    Observable<UserResponse> getTimeTableData(@Field("token") String token);
 
     @FormUrlEncoded
     @POST("attend/mark")

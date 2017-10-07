@@ -7,6 +7,8 @@ import com.mjjam.attendanceapp.data.models.UserResponse;
 import com.mjjam.attendanceapp.data.remote.UserRestService;
 import com.mjjam.attendanceapp.data.repository.UserRepository;
 
+import okhttp3.ResponseBody;
+import retrofit2.Response;
 import rx.Observable;
 
 public class UserRepositoryImpl implements UserRepository {
@@ -31,7 +33,7 @@ public class UserRepositoryImpl implements UserRepository {
 
 
     @Override
-    public Observable<UserResponse> getTimeTable(String token) {
+    public Observable<Response<ResponseBody>> getTimeTable(String token) {
         return userRestService.getTimeTable(token);
     }
 
@@ -41,7 +43,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public Observable<UserResponse> getTimeTable(String token, String day) {
+    public Observable<Response<ResponseBody>> getTimeTable(String token, String day) {
         return userRestService.getTimeTable(token, day);
     }
 
