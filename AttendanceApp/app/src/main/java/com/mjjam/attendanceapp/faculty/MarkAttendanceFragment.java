@@ -8,14 +8,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
@@ -25,26 +30,36 @@ import android.widget.Toast;
 
 import com.mjjam.attendanceapp.Manifest;
 import com.mjjam.attendanceapp.R;
+import com.mjjam.attendanceapp.common.ConnectionDetector;
+import com.mjjam.attendanceapp.data.models.UserResponse;
+import com.mjjam.attendanceapp.helper.DatabaseHelper;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashSet;
+import java.util.Locale;
 import java.util.Set;
 import java.util.UUID;
+
+import static android.app.Activity.RESULT_OK;
 
 /**
  * Created by Archish on 10/6/2017.
  */
 
-public class BluetoothDeviceActivity extends AppCompatActivity {
+public class MarkAttendanceFragment extends Fragment implements MarkAttendanceContract.MarkView {
     private BluetoothAdapter mBTAdapter;
     private Set<BluetoothDevice> mPairedDevices;
     private ArrayAdapter<String> mBTArrayAdapter;
     private ListView mDevicesListView;
-    private ConnectedThread mConnectedThread; // bluetooth background worker thread to send and receive data
+    private ConnectedThread mConnectedThread;
+    HashSet<String> btDevices;
 
     public String TAG = "HomeFragment";
     private Handler mHandler; // Our main handler that will receive callback notifications
@@ -59,40 +74,43 @@ public class BluetoothDeviceActivity extends AppCompatActivity {
     private final static int CONNECTING_STATUS = 3; // used in bluetooth handler to identify message status
 
 
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_bt);
-        mDevicesListView = (ListView) findViewById(R.id.listView);
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
-        mBTArrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1);
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.activity_main_bt,container,false);
+        mDevicesListView = (ListView) view.findViewById(R.id.listView);
+        btDevices = new HashSet<>();
+        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
+        mBTArrayAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1);
         mBTAdapter = BluetoothAdapter.getDefaultAdapter(); // get a handle on the bluetooth radio
         mDevicesListView.setAdapter(mBTArrayAdapter);
         if (mBTArrayAdapter == null) {
             // Device does not support Bluetooth
-            Toast.makeText(getApplicationContext(), "Bluetooth device not found!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity().getApplicationContext(), "Bluetooth device not found!", Toast.LENGTH_SHORT).show();
         } else {
             discover();
         }
 
+        return view;
     }
 
-//TODO tid,date,time,studentsList
+
+    //TODO tid,date,time,studentsList
     private void bluetoothOn() {
         if (!mBTAdapter.isEnabled()) {
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
-            Toast.makeText(getApplicationContext(), "Bluetooth turned on", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity().getApplicationContext(), "Bluetooth turned on", Toast.LENGTH_SHORT).show();
 
         } else {
-            Toast.makeText(getApplicationContext(), "Bluetooth is already on", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity().getApplicationContext(), "Bluetooth is already on", Toast.LENGTH_SHORT).show();
         }
     }
 
     // Enter here after user selects "yes" or "no" to enabling radio
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent Data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent Data) {
         // Check which request we're responding to
         if (requestCode == REQUEST_ENABLE_BT) {
             // Make sure the request was successful
@@ -100,7 +118,8 @@ public class BluetoothDeviceActivity extends AppCompatActivity {
                 // The user picked a contact.
                 // The Intent's data Uri identifies which contact was selected.
 
-            } else{}
+            } else {
+            }
 
         }
     }
@@ -108,26 +127,42 @@ public class BluetoothDeviceActivity extends AppCompatActivity {
     private void bluetoothOff() {
         mBTAdapter.disable(); // turn off
 
-        Toast.makeText(getApplicationContext(), "Bluetooth turned Off", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), "Bluetooth turned Off", Toast.LENGTH_SHORT).show();
     }
 
     private void discover() {
         // Check if the device is already discovering
         if (mBTAdapter.isDiscovering()) {
             mBTAdapter.cancelDiscovery();
-            Toast.makeText(getApplicationContext(), "Discovery stopped", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity().getApplicationContext(), "Discovery stopped", Toast.LENGTH_SHORT).show();
             //TODO Network Call
-
+            if (new ConnectionDetector(getActivity().getApplicationContext()).isConnectingToInternet())
+                onlinePushData();
+            else
+                offlinePushData();
         } else {
             if (mBTAdapter.isEnabled()) {
                 mBTArrayAdapter.clear(); // clear items
                 mBTAdapter.startDiscovery();
-                Toast.makeText(getApplicationContext(), "Discovery started", Toast.LENGTH_SHORT).show();
-                registerReceiver(blReceiver, new IntentFilter(BluetoothDevice.ACTION_FOUND));
+                Toast.makeText(getActivity().getApplicationContext(), "Discovery started", Toast.LENGTH_SHORT).show();
+                getActivity().registerReceiver(blReceiver, new IntentFilter(BluetoothDevice.ACTION_FOUND));
             } else {
-                Toast.makeText(getApplicationContext(), "Bluetooth not on", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity().getApplicationContext(), "Bluetooth not on", Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+
+    private void onlinePushData() {
+
+    }
+
+    private void offlinePushData() {
+        DatabaseHelper databaseHelper = DatabaseHelper.getDbInstance(getActivity().getApplicationContext());
+        Calendar c = Calendar.getInstance();
+        SimpleDateFormat df = new SimpleDateFormat("HH:mm", new Locale("en"));
+        String formattedDate = df.format(c.getTime());
+        //databaseHelper.insertToStudent();
     }
 
     final BroadcastReceiver blReceiver = new BroadcastReceiver() {
@@ -137,7 +172,8 @@ public class BluetoothDeviceActivity extends AppCompatActivity {
             if (BluetoothDevice.ACTION_FOUND.equals(action)) {
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                 // add the name to the list
-                mBTArrayAdapter.add(device.getName() + "\n" + device.getAddress());
+                mBTArrayAdapter.add(device.getName());
+                btDevices.add(device.getName());
                 mBTArrayAdapter.notifyDataSetChanged();
             }
         }
@@ -146,7 +182,7 @@ public class BluetoothDeviceActivity extends AppCompatActivity {
         public void onItemClick(AdapterView<?> av, View v, int arg2, long arg3) {
 
             if (!mBTAdapter.isEnabled()) {
-                Toast.makeText(getBaseContext(), "Bluetooth not on", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity().getBaseContext(), "Bluetooth not on", Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -165,7 +201,7 @@ public class BluetoothDeviceActivity extends AppCompatActivity {
                         mBTSocket = createBluetoothSocket(device);
                     } catch (IOException e) {
                         fail = true;
-                        Toast.makeText(getBaseContext(), "Socket creation failed", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity().getBaseContext(), "Socket creation failed", Toast.LENGTH_SHORT).show();
                     }
                     // Establish the Bluetooth socket connection.
                     try {
@@ -178,7 +214,7 @@ public class BluetoothDeviceActivity extends AppCompatActivity {
                                     .sendToTarget();
                         } catch (IOException e2) {
                             //insert code to deal with this
-                            Toast.makeText(getBaseContext(), "Socket creation failed", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity().getBaseContext(), "Socket creation failed", Toast.LENGTH_SHORT).show();
                         }
                     }
                     if (fail == false) {
@@ -201,6 +237,17 @@ public class BluetoothDeviceActivity extends AppCompatActivity {
             Log.e(TAG, "Could not create Insecure RFComm Connection", e);
         }
         return device.createRfcommSocketToServiceRecord(BTMODULEUUID);
+    }
+
+    @Override
+    public void onNetworkException(Throwable e) {
+
+    }
+
+    @Override
+    public void onPush(UserResponse userResponse) {
+        Toast.makeText(getActivity().getApplicationContext(), userResponse.getMessage(), Toast.LENGTH_SHORT).show();
+
     }
 
     private class ConnectedThread extends Thread {
