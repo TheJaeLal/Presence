@@ -92,7 +92,6 @@ public class StudentHomeFragment extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 }
-=======
 //package com.mjjam.attendanceapp.dashboard;
 //
 //import android.bluetooth.BluetoothAdapter;
