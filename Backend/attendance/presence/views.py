@@ -5,6 +5,7 @@ from auth import views
 
 from presence import models
 import hashlib
+import calendar
 
 # Create your views here.
 def schedule(request):
@@ -171,15 +172,57 @@ def get_unix(time):
 def get_attendance(request):
 
     response = {
-        'percentage'
+        'success':False,
+        'percentage':None
     }
     if request.method=='POST':
         course_name = request.POST.get('course')
         roll_no = request.POST.get('roll_no')
         month_name = request.POST.get('month')
 
+        if response['percentage'] = __get_attendance(roll_no,course_name,month_name)
+            response['success'] = True
+
+    return JsonResponse(response)
 
 
 
-def __get_attendance(roll_no,course_name,month_name)
+#Returns percentage or None
+def __get_attendance(roll_no,course_name,month_name):
+    percentage_for_course_for_month = None
+    percentage_for_month = None
 
+    #Converting from month name to month_no
+    month_no = list(calendar.month_name).index(month_name)
+
+    try:
+        student = models.Student.objects.get(roll_no = roll_no)
+
+    except models.Student.DoesNotExist:
+        print("Student does not exist, error occured inside __get_attendance in views.py")
+        return None
+
+    try:
+
+        #Filter for student
+
+        attendance_list_for_student = models.Attendance.filter(student=student)
+
+    except models.Attendance.DoesNotExist:
+        print("No attendance record for student, means he was present for none of the lectures")
+        return 0
+
+        #Filter for month
+        attendance_list_for_student_for_month = [a for a in attendance_list_for_student if a.date__month == month_no]
+
+        percentage_for_month = len(attendance_list_for_student_for_month)/len()
+
+
+        #Filter for course
+        attendance_list_for_student_for_month_for_course = [a for a in attendance_list_for_student if a.lecture.lecture.course.name == course_name]
+
+
+        attendance_for_course_for_div_for_course = models.Attendance.filter(lecture__lecture__div__div==student.div, lecture__lecture__course__name==course_name)
+        percentage = len(attendance_list_for_student_for_month_for_course)/len(attendance_for_course_for_div_for_course)
+
+    return percentage
