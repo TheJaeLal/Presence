@@ -38,3 +38,7 @@ def get_epoch(date,time):
 	time = time_from_string(time)
 	dt = datetime.datetime.combine(date,time)
 	return int((dt - EPOCH).total_seconds()/10)
+
+def get_day_from_index(index):
+	days = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday']
+	return days[int(index)-1]

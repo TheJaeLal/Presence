@@ -4,11 +4,13 @@ from django.http import HttpResponse
 from django.http import JsonResponse
 import time, hashlib
 from presence.models import Faculty, Student, Course, Lecture, Attendance
+from presence.models import Timetable
 from auth import backend as MyCustomBackend
 from django.core import serializers
 import json
 from django.core.exceptions import ObjectDoesNotExist
-
+from presence.helper import time_to_str
+from presence.helper import get_day_from_index
 # Create your views here.
 def user_login(request):
     #Is it a Http Post request?
@@ -94,6 +96,18 @@ def user_login(request):
 
                     print(lecs)
                     response['courses'] = [lec.course.name for lec in lecs]
+
+                    timetable = []
+                    for lec in lecs:
+                        slots = Timetable.objects.filter(lecture=lec)
+                        for slot in slots:
+                            entry = dict()
+                            entry["tid"] = slot.id
+                            entry["time"] = time_to_str(slot.start)
+                            entry["course"] = lec.course.name
+                            entry["day"] = get_day_from_index(slot.day)
+                            timetable.append(entry)
+                    response['data'] = timetable
 
 
                 elif student:
