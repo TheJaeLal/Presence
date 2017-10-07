@@ -1,59 +1,46 @@
-from presence.models import User
-from presence.models import Faculty
-from presence.models import Student
+from presence.models import User,Faculty, Student
 
-class MyCustomBackend(object):
+def verify_faculty(user):
 
-    def authenticate(self, username = None, password = None, type=None):
+    if not user:
+        return None
 
-        #Check the username, password and return a user
-        try:
-            #Try getting the user with given username
-            user = User.objects.get(username=username)
+    print("***Inside Authenticate")
+    #Check the username, password and return a user
+    try:
 
-            #valid_password=True if passwords match
-            valid_password = user.password==password
+        print("***It is a faculty")
+        valid_type = Faculty.objects.get(user=user)
+        print("***Valid type =",valid_type)
 
-            #If User is a Faculty
-            if type==1:
-                valid_type = Faculty.objects.get(user=user)
 
-            #If user is a student
-            elif type==2:
-                valid_type = Student.objects.get(user=user)
+        if valid_type:
+            print("***Everything is perfect")
+            return valid_type
 
-            if valid_password and valid_type:
-                return user,valid_type
+    except Faculty.DoesNotExist:
+        return None
 
-            #Invalid password or user_type
-            else:
-                return None,None
+    return None
 
-        except User.DoesNotExist:
-            return None,None
+def verify_student(user):
+    if not user:
+        return None
+    
+    print("***Inside Authenticate")
+    #Check the username, password and return a user
+    try:
 
-    def authenticate(self,token=None):
-        #Check the token and return a user
+        print("***It is a student")
+        valid_type = Student.objects.get(user=user)
+        print("***Valid type =",valid_type)
 
-        #valid token and user is a Faculty
-        user_type = token[1]
 
-        try:
-            if token and user_type=='1':
-                faculty = Faculty.objects.get(token=token)
-                return faculty
+        if valid_type:
+            print("***Everything is perfect")
+            return valid_type
 
-            elif token and user_type=='2':
-                student = Student.objects.get(token=token)
-                return student
+    except Student.DoesNotExist:
+        return None
 
-        except: User.DoesNotExist
-            return None
-
-    # Required for the backend to work properly
-
-    def get_user(self, user_id):
-        try:
-            return User.objects.get(pk=user_id)
-        except User.DoesNotExist:
-            return None
+    return None

@@ -22,5 +22,5 @@ from auth import views
 schema_view = get_swagger_view(title='Presence API')
 
 urlpatterns = [
-    url(r'^$', views.user_login)
+    url(r'^login', views.user_login)
 ]

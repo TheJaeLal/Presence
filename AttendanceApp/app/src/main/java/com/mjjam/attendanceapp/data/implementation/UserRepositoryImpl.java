@@ -17,8 +17,6 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
 
-
-
     @Override
     public Observable<UserResponse> getUser() {
         return userRestService.getUser();
@@ -26,14 +24,23 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public Observable<UserLoginResponse> setLogin(String username, String password, int type) {
-        return userRestService.setLogin(username,password,type);
+        return userRestService.setLogin(username, password, type);
     }
-
 
 
     @Override
     public Observable<UserResponse> logout(String accessToken) {
         return userRestService.logout(accessToken);
+    }
+
+    @Override
+    public Observable<UserResponse> getTimeTable(String token) {
+        return userRestService.getTimeTable(token);
+    }
+
+    @Override
+    public Observable<UserResponse> getTimeTable(String token, String day) {
+        return userRestService.getTimeTable(token, day);
     }
 
 

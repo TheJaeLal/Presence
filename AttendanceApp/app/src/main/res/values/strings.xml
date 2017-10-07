@@ -23,5 +23,15 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-
+    <string name="day_schedule">Day Schedule</string>
+    <string name="week_schedule">Week Schedule</string>
+    <string-array name="week">
+    <item name="1">Monday</item>
+    <item name="2">Tuesday</item>
+    <item name="3">Wednesday</item>
+    <item name="4">Thursday</item>
+    <item name="5">Friday</item>
+    <item name="6">Saturday</item>
+    <item name="7">Sunday</item>
+</string-array>
 </resources>

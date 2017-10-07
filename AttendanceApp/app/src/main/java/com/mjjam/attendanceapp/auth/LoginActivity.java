@@ -1,6 +1,5 @@
 package com.mjjam.attendanceapp.auth;
 
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
@@ -24,7 +23,6 @@ import com.mjjam.attendanceapp.data.repository.UserRepository;
 import com.mjjam.attendanceapp.widgets.BaseButton;
 import com.mjjam.attendanceapp.widgets.BaseEditText;
 import com.mjjam.attendanceapp.widgets.BaseRadioButton;
-import com.mjjam.attendanceapp.widgets.BaseTextView;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.Manifest.permission.CAMERA;
@@ -35,11 +33,9 @@ import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 public class LoginActivity extends BaseActivity implements LoginContract.LoginView {
 
-    BaseTextView tvForgotPassword, tvCreateAccount;
     BaseEditText etUsername, etPassword;
     BaseButton bLogin;
     LoginPresenter loginPresenter;
-    ProgressDialog _dialog;
     RadioGroup rgType;
     BaseRadioButton rType;
 
@@ -78,7 +74,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.LoginVi
     private int checkType() {
         int selectedId = rgType.getCheckedRadioButtonId();
         rType = (BaseRadioButton) findViewById(selectedId);
-        if(rType.getText().toString().equals(getString(R.string.as_teacher)))
+        if (rType.getText().toString().equals(getString(R.string.as_teacher)))
             return 1;
         return 2;
     }
@@ -96,8 +92,19 @@ public class LoginActivity extends BaseActivity implements LoginContract.LoginVi
         if (userLoginResponse.isStatus()) {
             new SharedPreferenceManager(getApplicationContext()).saveMainPage(1);
             new SharedPreferenceManager(getApplicationContext()).saveAccessToken(userLoginResponse.getAccessToken());
-            new SharedPreferenceManager(getApplicationContext()).saveAccessToken(userLoginResponse.getAccessToken());
-            new SharedPreferenceManager(getApplicationContext()).saveCategory(Integer.parseInt(String.valueOf(userLoginResponse.getAccessToken());
+            new SharedPreferenceManager(getApplicationContext()).saveCategory(userLoginResponse.getCategory());
+            new SharedPreferenceManager(getApplicationContext()).saveCourseList(userLoginResponse.getCourseList());
+
+            if (userLoginResponse.getCategory() == 1) {
+                new SharedPreferenceManager(getApplicationContext()).saveFirstName(userLoginResponse.getFacultyProfile().getUser().getFirst_name());
+                new SharedPreferenceManager(getApplicationContext()).saveLastName(userLoginResponse.getFacultyProfile().getUser().getLast_name());
+                new SharedPreferenceManager(getApplicationContext()).saveUserName(userLoginResponse.getFacultyProfile().getUser().getEmail());
+            } else {
+                new SharedPreferenceManager(getApplicationContext()).saveFirstName(userLoginResponse.getStudentProfile().getUser().getFirst_name());
+                new SharedPreferenceManager(getApplicationContext()).saveLastName(userLoginResponse.getStudentProfile().getUser().getLast_name());
+                new SharedPreferenceManager(getApplicationContext()).saveRollNo(userLoginResponse.getStudentProfile().getRoll_no());
+                new SharedPreferenceManager(getApplicationContext()).saveUserName(userLoginResponse.getStudentProfile().getUser().getEmail());
+            }
             Intent i = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(i);
             finish();
@@ -114,7 +121,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.LoginVi
 
     private boolean validate() {
         if (etUsername.getText().toString().isEmpty()) {
-            etUsername.setError("Mobile number cannot be empty");
+            etUsername.setError("Username cannot be empty");
             etUsername.setFocusable(true);
             return false;
         } else if (etPassword.getText().toString().isEmpty()) {

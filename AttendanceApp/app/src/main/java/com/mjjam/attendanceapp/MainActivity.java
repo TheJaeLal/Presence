@@ -22,9 +22,11 @@ import com.mjjam.attendanceapp.common.Config;
 import com.mjjam.attendanceapp.common.CustomFontLoader;
 import com.mjjam.attendanceapp.dashboard.FacultyHomeFragment;
 import com.mjjam.attendanceapp.data.local.SharedPreferenceManager;
+import com.mjjam.attendanceapp.data.models.MainWrapper;
 import com.mjjam.attendanceapp.data.models.UserLoginResponse;
 import com.mjjam.attendanceapp.data.models.UserResponse;
 import com.mjjam.attendanceapp.data.repository.UserRepository;
+import com.mjjam.attendanceapp.helper.DatabaseHelper;
 
 
 /***
@@ -33,7 +35,7 @@ import com.mjjam.attendanceapp.data.repository.UserRepository;
  * NavigationDrawer.
  */
 
-public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener, LoginContract.LoginView {
+public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener, LoginContract.LoginView, LoginContract.MainActivityView {
     NavigationView navigationView = null;
     Toolbar toolbar = null;
 
@@ -98,9 +100,9 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
         navigationView.setNavigationItemSelectedListener(this);
         //if (new SharedPreferenceManager(getApplicationContext()).getCategory() == 3)
-            //navigationView.getMenu().findItem(R.id.nav_subscription).setVisible(false);
+        //navigationView.getMenu().findItem(R.id.nav_subscription).setVisible(false);
         //else if (new SharedPreferenceManager(getApplicationContext()).getCategory() == 4)
-            //navigationView.getMenu().findItem(R.id.nav_assignment).setVisible(false);
+        //navigationView.getMenu().findItem(R.id.nav_assignment).setVisible(false);
         Config.changeFontInViewGroup(drawer, CustomFontLoader.MONTSERRAT);
 
 
@@ -162,4 +164,16 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         }
     }
 
+    @Override
+    public void onData(MainWrapper mainWrapper) {
+        DatabaseHelper db = DatabaseHelper.getDbInstance(getApplicationContext());
+        for (int i = 0; i < mainWrapper.data.size(); i++) {
+            try {
+                db.insertToAttendance(mainWrapper.data.get(i).getTid()
+                        , mainWrapper.data.get(i).getTday()
+                        , mainWrapper.data.get(i).getTtime());
+            } catch (Exception ae) {
+            }
+        }
+    }
 }
