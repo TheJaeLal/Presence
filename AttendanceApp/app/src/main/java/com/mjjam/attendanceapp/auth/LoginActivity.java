@@ -95,7 +95,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.LoginVi
             new SharedPreferenceManager(getApplicationContext()).saveAccessToken(userLoginResponse.getToken());
             new SharedPreferenceManager(getApplicationContext()).saveCategory(userLoginResponse.getType());
             new SharedPreferenceManager(getApplicationContext()).saveCourseList(userLoginResponse.getCourses());
-
+            //new SharedPreferenceManager(get)
             if (userLoginResponse.getType() == 1) {
                 new SharedPreferenceManager(getApplicationContext()).saveFirstName(userLoginResponse.getFirstname());
                 new SharedPreferenceManager(getApplicationContext()).saveLastName(userLoginResponse.getLastname());

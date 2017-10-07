@@ -44,7 +44,7 @@ public class StudentHomeFragment extends Fragment implements StudentHomeAdapter.
         rvLectures = (RecyclerView) view.findViewById(R.id.rvLectures);
         tvSName = (BaseTextView) view.findViewById(R.id.tvSName);
         tvSTime = (BaseTextView) view.findViewById(R.id.tvSTime);
-        tvSName.setText("DWM");
+        tvSName.setText("ADBMS");
         tvSTime.setText("16:10");
         DateFormat dateFormat = new SimpleDateFormat("HH:mm");
         Date date = new Date();
@@ -82,13 +82,11 @@ public class StudentHomeFragment extends Fragment implements StudentHomeAdapter.
 
         }
         ArrayList<Lecture> lectures = new ArrayList<>();
-        lectures.add(new Lecture("DWM", "11:30"));
-        lectures.add(new Lecture("RDBMS", "13:15"));
-        lectures.add(new Lecture("JAVA", "14:15"));
-        lectures.add(new Lecture("RDBMS", "13:15"));
-        lectures.add(new Lecture("RDBMS", "13:15"));
-        lectures.add(new Lecture("RDBMS", "13:15"));
-        lectures.add(new Lecture("ADBMS", "14:15"));
+        lectures.add(new Lecture("CSS", "15:15"));
+        lectures.add(new Lecture("JAVA", "16:15"));
+        lectures.add(new Lecture("RDBMS", "17:15"));
+        lectures.add(new Lecture("DWM", "18:30"));
+        lectures.add(new Lecture("ADBMS", "19:30"));
         rvLectures.setHasFixedSize(true);
         rvLectures.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         rvLectures.setAdapter(new StudentHomeAdapter(lectures, this));
@@ -120,7 +118,7 @@ public class StudentHomeFragment extends Fragment implements StudentHomeAdapter.
             for (int i = 0; i < result.length; i++) {
                 sb.append(Integer.toString((result[i] & 0xff) + 0x100, 16).substring(1));
             }
-            Log.d("hash",sb.toString());
+            Log.d("hash", sb.toString());
 
         } catch (NoSuchAlgorithmException e) {
             Log.e("Hash", "Error initializing SHA1 message digest");
