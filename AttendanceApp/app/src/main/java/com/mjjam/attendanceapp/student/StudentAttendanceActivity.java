@@ -63,6 +63,8 @@ public class StudentAttendanceActivity extends AppCompatActivity implements Stud
                         Toast.makeText(getApplicationContext(), "Select Course", Toast.LENGTH_SHORT).show();
                         studentAttendancePresenter.fetchData(prefs.getRollNo(), month, "");
                     }
+                } else {
+                    Toast.makeText(getApplicationContext(), "Select Month", Toast.LENGTH_SHORT).show();
                 }
             }
         });
