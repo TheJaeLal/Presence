@@ -47,7 +47,7 @@ def get_day_from_index(index):
 	return days[int(index)-1]
 
 def get_end_time(time,duration):
-    return t.replace(hour=t.hour+int(duration))
+    return time.replace(hour=time.hour+int(duration))
 
 def __get_attendance(roll_no,course_name,month_name):
     count_for_div_for_month_for_course = None
