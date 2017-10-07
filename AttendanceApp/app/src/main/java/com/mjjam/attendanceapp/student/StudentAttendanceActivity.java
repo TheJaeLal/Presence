@@ -2,10 +2,9 @@ package com.mjjam.attendanceapp.student;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,14 +24,17 @@ public class StudentAttendanceActivity extends AppCompatActivity implements Stud
     private String month, course;
     private SharedPreferenceManager prefs;
     StudentAttendancePresenter studentAttendancePresenter;
+    private Spinner monthSelector, courseSelector;
+    private Button submitButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_attendance);
 
-        final Spinner monthSelector = (Spinner) findViewById(R.id.spSelectMonth);
-        final Spinner courseSelector = (Spinner) findViewById(R.id.spSelectCourse);
+        monthSelector = (Spinner) findViewById(R.id.spSelectMonth);
+        courseSelector = (Spinner) findViewById(R.id.spSelectCourse);
+        submitButton = (Button) findViewById(R.id.bSubmit);
 
         this.monthList = new String[]{"Select Month", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
         this.courseList = new SharedPreferenceManager(this).getCourseList();
@@ -47,43 +49,24 @@ public class StudentAttendanceActivity extends AppCompatActivity implements Stud
         studentAttendancePresenter = new StudentAttendancePresenter(userRepository, this);
         prefs = new SharedPreferenceManager(getApplicationContext());
 
-        monthSelector.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                //Add query to fetch student monthly attendance
-                if (position != 0) {
-                    month = monthSelector.getItemAtPosition(position).toString();
-                    studentAttendancePresenter.fetchData(prefs.getRollNo(), month, "");
-                }
-            }
+            public void onClick(View v) {
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parentView) {
-                monthSelector.setPrompt("Select Course");
-            }
-        });
-
-        courseSelector.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                //Add query to fetch student course attendance
-                if (monthSelector.isSelected() && monthSelector.getSelectedItemPosition() != 0) {
+                if (monthSelector.getSelectedItemPosition() != 0) {
                     month = monthSelector.getSelectedItem().toString();
-                    course = courseSelector.getItemAtPosition(position).toString();
-                    studentAttendancePresenter.fetchData(prefs.getRollNo(), month, course);
-                } else {
-                    Toast.makeText(getApplicationContext(), "Select Month First", Toast.LENGTH_LONG).show();
+                    if (courseSelector.getSelectedItemPosition() != 0 && monthSelector.getSelectedItemPosition() != 0) {
+                        month = monthSelector.getSelectedItem().toString();
+                        course = courseSelector.getSelectedItem().toString();
+                        studentAttendancePresenter.fetchData(prefs.getRollNo(), month, course);
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Select Course", Toast.LENGTH_SHORT).show();
+                        studentAttendancePresenter.fetchData(prefs.getRollNo(), month, "");
+                    }
                 }
             }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parentView) {
-                courseSelector.setPrompt("Select Course");
-            }
-
         });
     }
-
 
     @Override
     public void onNetworkException(Throwable e) {
