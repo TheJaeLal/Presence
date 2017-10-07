@@ -3,11 +3,11 @@ from django.contrib.auth import authenticate,login
 from django.http import HttpResponse
 from django.http import JsonResponse
 import time, hashlib
-from presence.models import Faculty, Student, Course, Lecture, Attendance
+from presence.models import Faculty, Student, Course, Lecture, Attendance,User
 from auth import backend as MyCustomBackend
 from django.core import serializers
 import json
-
+from django.core.exceptions import ObjectDoesNotExist
 
 # Create your views here.
 def user_login(request):
@@ -55,7 +55,6 @@ def user_login(request):
             'success':False,
             'message':"",
             'token':"",
-            'profile':None,
             'username':None,
             'type':None,
             'courses': []
@@ -78,14 +77,24 @@ def user_login(request):
 
                 #Generate hash of the token generator string and assign it to response
                 response['token'] = hashlib.sha1(token_generator).hexdigest()
+                response['token']=str(user_type)+response['token']
                 response['username'] = username
 
 
                 #Check the type of user, faculty or student?
                 if faculty:
                     print("User is a faculty")
+                    faculty=Faculty.objects.get(user__username=username)
                     faculty.token = response['token']
-                    response['profile'] = json.loads(serializers.serialize('json', [ faculty, ]))[0]
+                    faculty.save()
+
+                    user=User.objects.get(username=username)
+
+                    response['firstname']=user.first_name
+                    response['lastname']=user.last_name
+                    response['rollno']=""
+
+                    #response['profile'] = json.loads(serializers.serialize('json', [ faculty, ]))[0]
                     response['type'] = 1
                     lecs = Lecture.objects.filter(lecturer=faculty)
 
@@ -95,8 +104,17 @@ def user_login(request):
 
                 elif student:
                     print('User is a student')
+                    student=Student.objects.get(user__username=username)
                     student.token = response['token']
-                    response['profile'] = json.loads(serializers.serialize('json', [student, ]))[0]
+                    student.save()
+
+                    user = User.objects.get(username=username)
+
+                    response['firstname'] = user.first_name
+                    response['lastname'] = user.last_name
+                    response['rollno'] = student.roll_no
+
+                    #response['profile'] = json.loads(serializers.serialize('json', [student, ]))[0]
                     response['type'] = 2
 
 
@@ -135,13 +153,13 @@ def user_login(request):
 
 def verify_token(token):
     user_type=token[0]
-    if(user_type==1):
+    if(user_type=='1'):
         try:
             faculty=Faculty.objects.get(token=token)
             return {"type":"FACULTY","object":faculty}
         except ObjectDoesNotExist as ode:
             return None
-    elif(user_type==2):
+    elif(user_type=='2'):
         try:
             student=Student.objects.get(token=token)
             return {"type":"STUDENT","object":student}

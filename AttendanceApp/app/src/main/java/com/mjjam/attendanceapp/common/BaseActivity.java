@@ -72,7 +72,7 @@ public class BaseActivity extends AppCompatActivity implements BaseContract.Base
 
     protected void accessTokenInvalidError() {
         /*SharedPreferencesManager.getInstance(this).setLoginStatus(false);
-        SharedPreferencesManager.getInstance(this).setAccessToken(null);
+        SharedPreferencesManager.getInstance(this).setToken(null);
         Intent in = new Intent(this, LoginActivity.class);
         in.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(in);*/

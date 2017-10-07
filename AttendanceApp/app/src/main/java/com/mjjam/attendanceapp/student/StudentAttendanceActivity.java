@@ -13,7 +13,7 @@ import com.mjjam.attendanceapp.data.local.SharedPreferenceManager;
 
 import java.util.ArrayList;
 
-public class StudentAttendance extends AppCompatActivity {
+public class StudentAttendanceActivity extends AppCompatActivity {
 
     private String[] monthList;
     private ArrayList<String> courseList;

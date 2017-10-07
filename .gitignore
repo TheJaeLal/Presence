@@ -1,6 +1,6 @@
 *.pyc
 *.sqlite3
-.idea/
+.idea/*
 lib/
 bin/
 .Python

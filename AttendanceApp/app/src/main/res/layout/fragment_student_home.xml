@@ -1,62 +1,71 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.mjjam.attendanceapp.dashboard.StudentHomeFragment">
+    android:orientation="vertical">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:fitsSystemWindows="true">
+
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/collapsing_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            app:expandedTitleMarginEnd="64dp"
+            app:expandedTitleMarginStart="48dp"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/card_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="8dp">
+
+                    <com.mjjam.attendanceapp.widgets.BaseTextView
+                        style="@style/PrimaryText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Current Lecture"
+                        android:textColor="@color/colorAccent" />
+
+                    <com.mjjam.attendanceapp.widgets.BaseTextView
+                        android:id="@+id/tvSName"
+                        style="@style/PrimaryText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="18sp" />
+
+                    <com.mjjam.attendanceapp.widgets.BaseTextView
+                        android:id="@+id/tvSTime"
+                        style="@style/SecondaryText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+        </android.support.design.widget.CollapsingToolbarLayout>
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:weightSum="10">
+        android:fillViewport="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <com.mjjam.attendanceapp.widgets.BaseTextView
-            style="@style/PrimaryText"
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rvLectures"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_margin="10dp"
-            android:layout_weight="1"
-            android:text="Student Home"
-            android:textSize="25sp" />
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:orientation="horizontal">
-
-            <com.mjjam.attendanceapp.widgets.BaseTextView
-                android:id="@+id/tvLastName"
-                style="@style/PrimaryText"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:layout_weight="0.5"
-                android:text="First Name"
-                android:textSize="20sp" />
-
-            <com.mjjam.attendanceapp.widgets.BaseTextView
-                android:id="@+id/tvFirstName"
-                style="@style/PrimaryText"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:layout_weight="0.5"
-                android:text="Last Name"
-                android:textSize="20sp" />
-        </LinearLayout>
-
-        <com.mjjam.attendanceapp.widgets.BaseTextView
-            android:id="@+id/tvRollNO"
-            style="@style/PrimaryText"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_margin="20dp"
-            android:layout_weight="1"
-            android:text="Roll No :"
-            android:textSize="20sp" />
-
-    </LinearLayout>
-
-</FrameLayout>
+            android:layout_height="match_parent" />
+    </android.support.v4.widget.NestedScrollView>
+</android.support.design.widget.CoordinatorLayout>

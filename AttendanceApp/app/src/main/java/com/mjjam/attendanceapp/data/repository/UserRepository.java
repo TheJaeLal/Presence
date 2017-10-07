@@ -21,5 +21,6 @@ public interface UserRepository {
     Observable<UserResponse> logout(String accessToken);
     Observable<UserResponse> getTimeTable(String token);
     Observable<UserResponse> getTimeTable(String token,String day);
+    Observable<UserResponse> sendData(String token,String mark);
 
 }
