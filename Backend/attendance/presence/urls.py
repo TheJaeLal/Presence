@@ -6,6 +6,5 @@ urlpatterns = [
     url(r'^mark$',views.mark),
     url(r'^schedule/pdf', pdfexport.schedulepdf),
     url(r'^schedule$', views.schedule),
-    url(r'^mark$',views.mark),
 
 ]
