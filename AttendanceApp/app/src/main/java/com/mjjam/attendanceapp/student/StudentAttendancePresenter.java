@@ -11,6 +11,6 @@ public class StudentAttendancePresenter implements StudentAttendanceContract.Stu
 
     @Override
     public void fetchData() {
-
+        // Call Server to get attendance report for Student (Monthly and CourseWise)
     }
 }
