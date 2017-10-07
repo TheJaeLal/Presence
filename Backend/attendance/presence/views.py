@@ -48,11 +48,3 @@ def schedule(request):
         response["success"]=False
         response["message"]="Invalid Request"
 
-def get_student_data(request):
-    response = {}
-    if request.method=='POST':
-
-        pass
-        #Suppose we have student data
-        #Suppose we have student time
-        #Suppose we have student
