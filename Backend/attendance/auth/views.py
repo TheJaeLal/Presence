@@ -11,6 +11,7 @@ import json
 from django.core.exceptions import ObjectDoesNotExist
 from presence.helper import time_to_str
 from presence.helper import get_day_from_index
+from presence.helper import get_end_time
 # Create your views here.
 def user_login(request):
     #Is it a Http Post request?
@@ -109,7 +110,8 @@ def user_login(request):
                         for slot in slots:
                             entry = dict()
                             entry["tid"] = slot.id
-                            entry["time"] = time_to_str(slot.start)
+                            entry["start_time"] = time_to_str(slot.start)
+                            entry["end_time"] = time_to_str(get_end_time(slot.start,slot.duration))
                             entry["course"] = lec.course.name
                             entry["day"] = get_day_from_index(slot.day)
                             timetable.append(entry)
