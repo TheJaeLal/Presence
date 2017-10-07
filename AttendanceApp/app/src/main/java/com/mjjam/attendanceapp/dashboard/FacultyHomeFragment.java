@@ -52,6 +52,7 @@ public class FacultyHomeFragment extends BaseFragment{
 //                homePresenter.fetchHomeData(new SharedPreferenceManager(getActivity().getApplicationContext()).getAccessToken());
 //            }
 //        });
+
         return view;
     }
 

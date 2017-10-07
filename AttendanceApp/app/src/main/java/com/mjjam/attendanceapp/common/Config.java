@@ -17,7 +17,7 @@ import android.widget.TextView;
  */
 public class Config {
 
-    public static final String BASE_URL = "http://192.168.0.101:8000/";
+    public static final String BASE_URL = "http://192.168.127.183:8000/";
 
 
     public static void changeFontInViewGroup(ViewGroup viewGroup, int fontType) {

@@ -17,14 +17,14 @@
 
             <com.mjjam.attendanceapp.widgets.BaseTextView
                 android:id="@+id/tvUSName"
-                style="@style/PrimaryText"
+                style="@style/SecondaryText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="18sp" />
 
             <com.mjjam.attendanceapp.widgets.BaseTextView
                 android:id="@+id/tvUSTime"
-                style="@style/SecondaryText"
+                style="@style/TertiaryText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
         </LinearLayout>

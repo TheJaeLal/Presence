@@ -48,25 +48,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         super.onNetworkException(e);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.activity_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.logout) {
-            UserRepository userRepository = ((AttendanceApp) getApplication()).getComponent().userRepository();
-            LoginPresenter loginPresenter = new LoginPresenter(userRepository, this);
-            loginPresenter.logout(new SharedPreferenceManager(getApplicationContext()).getAccessToken());
-            showProgressDialog();
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,13 +89,14 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             fragmentTransaction.commit();
 
         } else if (new SharedPreferenceManager(getApplicationContext()).getCategory() == 2) {
+            navigationView.getMenu().findItem(R.id.nav_home).setVisible(false);
+            navigationView.getMenu().findItem(R.id.nav_view_student).setVisible(false);
             StudentHomeFragment fragment = new StudentHomeFragment();
             android.support.v4.app.FragmentTransaction fragmentTransaction =
                     getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.fragment_container, fragment);
             fragmentTransaction.commit();
-            navigationView.getMenu().findItem(R.id.nav_home).setVisible(false);
-            navigationView.getMenu().findItem(R.id.nav_view_student).setVisible(false);
+
         }
         Config.changeFontInViewGroup(drawer, CustomFontLoader.MONTSERRAT);
 
@@ -138,7 +120,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 StudentHomeFragment studentHomeFragment = new StudentHomeFragment();
                 android.support.v4.app.FragmentTransaction fragmentTransaction1 =
                         getSupportFragmentManager().beginTransaction();
-                fragmentTransaction1.replace(R.id.fragment_container,studentHomeFragment);
+                fragmentTransaction1.replace(R.id.fragment_container, studentHomeFragment);
                 fragmentTransaction1.commit();
                 break;
             case R.id.nav_time_table:
@@ -168,25 +150,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     @Override
     public void onLogin(UserLoginResponse userResponse) {
 
-    }
-
-    @Override
-    public void onLogout(UserResponse userResponse) {
-        if (userResponse.isStatus()) {
-            dismissProgressDialog();
-            new SharedPreferenceManager(getApplicationContext()).removeAccessToken();
-            new SharedPreferenceManager(getApplicationContext()).removeCategory();
-            new SharedPreferenceManager(getApplicationContext()).removeMainPage();
-            Intent i = new Intent(MainActivity.this, LoginActivity.class);
-            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(i);
-            finish();
-
-
-        } else {
-            dismissProgressDialog();
-            Toast.makeText(MainActivity.this, "Oops something went wrong.", Toast.LENGTH_SHORT).show();
-        }
     }
 
     @Override

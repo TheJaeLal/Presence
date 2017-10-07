@@ -25,7 +25,7 @@ public class LoginPresenter implements LoginContract.LoginPresenter {
 
 
     @Override
-    public void login(String username, String password,int type) {
+    public void login(String username, String password, int type) {
         userRepository
                 .setLogin(username, password, type)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -42,7 +42,7 @@ public class LoginPresenter implements LoginContract.LoginPresenter {
                         if (view != null)
                             view.onNetworkException(e);
 
-                        }
+                    }
 
                     @Override
                     public void onNext(UserLoginResponse userLoginResponse) {
@@ -54,29 +54,5 @@ public class LoginPresenter implements LoginContract.LoginPresenter {
                 });
     }
 
-    @Override
-    public void logout(String accessToken) {
-        userRepository.logout(accessToken)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe(new Observer<UserResponse>() {
-                    @Override
-                    public void onCompleted() {
 
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        if (view != null)
-                            view.onNetworkException(e);
-                    }
-
-                    @Override
-                    public void onNext(UserResponse userResponse) {
-                        if (view != null)
-                            view.onLogout(userResponse);
-                    }
-                });
-
-    }
 }

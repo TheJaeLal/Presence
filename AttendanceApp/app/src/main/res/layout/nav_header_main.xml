@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="190dp"
-    android:background="#6871b3"
+    android:background="#212121"
     android:orientation="vertical">
 
     <de.hdodenhof.circleimageview.CircleImageView

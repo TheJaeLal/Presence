@@ -29,14 +29,15 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
 
-    @Override
-    public Observable<UserResponse> logout(String accessToken) {
-        return userRestService.logout(accessToken);
-    }
 
     @Override
     public Observable<UserResponse> getTimeTable(String token) {
         return userRestService.getTimeTable(token);
+    }
+
+    @Override
+    public Observable<UserResponse> getTimeTableData(String token) {
+        return userRestService.getTimeTableData(token);
     }
 
     @Override

@@ -19,8 +19,8 @@ public interface UserRepository {
 
     Observable<UserLoginResponse> setLogin(String username, String password, int type);
 
-    Observable<UserResponse> logout(String accessToken);
     Observable<UserResponse> getTimeTable(String token);
+    Observable<UserResponse> getTimeTableData(String token);
     Observable<UserResponse> getTimeTable(String token,String day);
     Observable<UserResponse> sendData(String token,String mark);
     Observable<AttendanceResponse> attendanceQuery(int rollNo, String month, String courseName);

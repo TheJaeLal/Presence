@@ -9,16 +9,17 @@ public interface LoginContract {
     interface LoginView extends BaseContract.BaseView {
         void onLogin(UserLoginResponse userResponse);
 
-        void onLogout(UserResponse userResponse);
 
     }
     interface MainActivityView extends BaseContract.BaseView{
         void onData(MainWrapper mainWrapper);
     }
 
+    interface MainPresenter {
+        void getTimeTable(String token);
+    }
     interface LoginPresenter {
         void login(String username, String password,int type);
 
-        void logout(String accessToken);
     }
 }
