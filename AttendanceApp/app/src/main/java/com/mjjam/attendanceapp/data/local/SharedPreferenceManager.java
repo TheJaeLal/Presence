@@ -50,6 +50,10 @@ public class SharedPreferenceManager {
         settings.edit().putStringSet(PREFS_COURSELIST, new HashSet<String>(course_list)).apply();
     }
 
+    public void saveBluetoothName(String bluetooth) {
+        settings.edit().putString("bluetooth", bluetooth).apply();
+    }
+
 
     public void saveMainPage(int page) {
         settings.edit().putInt(PREFS_MAINPAGE, page).apply();
@@ -61,6 +65,10 @@ public class SharedPreferenceManager {
 
     public String getAccessToken() {
         return settings.getString(PREFS_ACCESS_TOKEN, null);
+    }
+
+    public String getBluetoothName() {
+        return settings.getString("bluetooth", null);
     }
 
     public int getCategory() {

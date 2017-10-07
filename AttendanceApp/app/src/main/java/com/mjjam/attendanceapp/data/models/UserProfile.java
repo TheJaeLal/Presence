@@ -78,4 +78,3 @@ public class UserProfile implements Parcelable {
         dest.writeString(password);
     }
 }
-}

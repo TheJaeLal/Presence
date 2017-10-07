@@ -29,7 +29,10 @@ def schedule(request):
                             {
                                 "coursename":course.lecture.course.name,
                                 "starttime":course.start,
-                                "duration":course.duration
+                                "duration":course.duration,
+                                "semester":course.lecture.course.clas.semester.semester,
+                                "division":course.lecture.div.div,
+                                "department":course.lecture.course.clas.dept.name
                             }
                         )
                     response['success']=True
@@ -43,6 +46,9 @@ def schedule(request):
                                 "coursename": course.lecture.course.name,
                                 "starttime": course.start,
                                 "duration": course.duration,
+                                "semester": course.lecture.course.clas.semester.semester,
+                                "division": course.lecture.div.div,
+                                "department": course.lecture.course.clas.dept.name,
                                 "day":course.day,
                             }
                         )
@@ -51,7 +57,43 @@ def schedule(request):
                     response['timetable'] = schedule
             elif(auth_result["type"]=="STUDENT"):
                 #retrieve student timetable
-                print()
+                student=auth_result["object"]
+                if (day != None and int(day) >= 1 and int(day) <= 7):
+                    lecs = models.Timetable.objects.filter(lecture__div=student.div,day=day)
+                    for course in lecs:
+
+                        schedule.append(
+                            {
+                                "coursename":course.lecture.course.name,
+                                "starttime":course.start,
+                                "duration":course.duration,
+                                "semester":course.lecture.course.clas.semester.semester,
+                                "division":course.lecture.div.div,
+                                "department":course.lecture.course.clas.dept.name,
+                                "faculty":course.lecture.lecturer.user.first_name +" "+ course.lecture.lecturer.user.last_name
+                            }
+                        )
+                    response['success']=True
+                    response["message"]="Successfully Completed the Operation"
+                    response['timetable']=schedule
+                else:
+                    lecs = models.Timetable.objects.filter(lecture__div=student.div)
+                    for course in lecs:
+                        schedule.append(
+                            {
+                                "coursename": course.lecture.course.name,
+                                "starttime": course.start,
+                                "duration": course.duration,
+                                "semester": course.lecture.course.clas.semester.semester,
+                                "division": course.lecture.div.div,
+                                "department": course.lecture.course.clas.dept.name,
+                                "day":course.day,
+                                "faculty": course.lecture.lecturer.user.first_name + " " + course.lecture.lecturer.user.last_name
+                            }
+                        )
+                    response['success'] = True
+                    response["message"] = "Successfully Completed the Operation"
+                    response['timetable'] = schedule
 
         else:
             response['success']=False;

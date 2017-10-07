@@ -3,59 +3,52 @@ package com.mjjam.attendanceapp.data.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.util.ArrayList;
-
 /**
  * Created by Archish on 10/6/2017.
  */
 
 public class UserLoginResponse implements Parcelable {
-    boolean status;
+    boolean success;
     String message;
-    String accessToken;
-    int category;
+    String token;
+    int type;
+    int rollno;
+    String firstname;
+    String lastname;
 
-    FacultyProfile facultyProfile;
-    StudentProfile studentProfile;
-    ArrayList<String> courseList;
-
-    public ArrayList<String> getCourseList() {
-        return courseList;
+    public int getRollno() {
+        return rollno;
     }
 
-    public void setCourseList(ArrayList<String> courseList) {
-        this.courseList = courseList;
+    public void setRollno(int rollno) {
+        this.rollno = rollno;
     }
 
-    public int getCategory() {
-        return category;
+    public String getFirstname() {
+        return firstname;
     }
 
-    public void setCategory(int category) {
-        this.category = category;
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
     }
 
-    public FacultyProfile getFacultyProfile() {
-        return facultyProfile;
+    public String getLastname() {
+        return lastname;
     }
 
-    public void setFacultyProfile(FacultyProfile facultyProfile) {
-        this.facultyProfile = facultyProfile;
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
     }
 
-    public StudentProfile getStudentProfile() {
-        return studentProfile;
+    public static Creator<UserLoginResponse> getCREATOR() {
+        return CREATOR;
     }
-
-    public void setStudentProfile(StudentProfile studentProfile) {
-        this.studentProfile = studentProfile;
-    }
-
 
     protected UserLoginResponse(Parcel in) {
-        status = in.readByte() != 0;
+        success = in.readByte() != 0;
         message = in.readString();
-        accessToken = in.readString();
+        token = in.readString();
+        type = in.readInt();
     }
 
     public static final Creator<UserLoginResponse> CREATOR = new Creator<UserLoginResponse>() {
@@ -70,12 +63,12 @@ public class UserLoginResponse implements Parcelable {
         }
     };
 
-    public boolean isStatus() {
-        return status;
+    public boolean isSuccess() {
+        return success;
     }
 
-    public void setStatus(boolean status) {
-        this.status = status;
+    public void setSuccess(boolean success) {
+        this.success = success;
     }
 
     public String getMessage() {
@@ -86,19 +79,19 @@ public class UserLoginResponse implements Parcelable {
         this.message = message;
     }
 
-    public String getAccessToken() {
-        return accessToken;
+    public String getToken() {
+        return token;
     }
 
-    public void setAccessToken(String accessToken) {
-        this.accessToken = accessToken;
+    public void setToken(String token) {
+        this.token = token;
     }
 
-    public UserLoginResponse(boolean status, String message, String accessToken) {
+    public UserLoginResponse(boolean success, String message, String token) {
 
-        this.status = status;
+        this.success = success;
         this.message = message;
-        this.accessToken = accessToken;
+        this.token = token;
     }
 
     @Override
@@ -108,8 +101,16 @@ public class UserLoginResponse implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeByte((byte) (status ? 1 : 0));
+        dest.writeByte((byte) (success ? 1 : 0));
         dest.writeString(message);
-        dest.writeString(accessToken);
+        dest.writeString(token);
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 }

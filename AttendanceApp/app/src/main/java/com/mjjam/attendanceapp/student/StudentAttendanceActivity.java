@@ -6,7 +6,7 @@ import android.support.v7.widget.Toolbar;
 
 import com.mjjam.attendanceapp.R;
 
-public class StudentAttendance extends AppCompatActivity {
+public class StudentAttendanceActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
