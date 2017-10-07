@@ -83,6 +83,9 @@ def __get_attendance(roll_no,course_name,month_name):
     count_for_div_for_month = len(Period.objects.filter(timetable__lecture__div=student.div))
     percentage_for_month = int((count_for_student_for_month/count_for_div_for_month) * 100)
 
+    if course_name==None or course_name.strip()=="":
+        return None
+
     attendance_list_for_student_for_month_for_course = attendance_list_for_student_for_month.filter(period__timetable__lecture__course__name=course_name) 
     count_for_student_for_month_for_course = len(attendance_list_for_student_for_month_for_course)
 
