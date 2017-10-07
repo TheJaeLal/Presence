@@ -4,25 +4,26 @@ from django.http import HttpResponse
 from presence.models import Attendance
 from presence.helper import authenticate
 from presence.helper import date_from_string
-
-# Create your views here.
-
-def mark(request):
-	if request.method == 'POST':
-		# print(request.POST)
-		dic = json.loads(request.POST["mark"])
-		for item in dic["students"]:
-			roll,time = item.split('_')
-			roll = int(roll)
-			stud = authenticate(roll,time,dic["time"])
-			if stud:
-				a = Attendance(lecture_id=int(dic["tid"]),date=date_from_string(dic["date"]),student=stud)
-	return HttpResponse("OK")
-
 from django.http import JsonResponse
 from auth import views
 
 from presence import models
+# Create your views here.
+
+def mark(request):
+    if request.method == 'POST':
+        token=request.POST.get("token")
+        auth_result=views.verify_token(token)
+        dic = json.loads(request.POST["mark"])
+        if auth_result:
+            for item in dic["students"]:
+                roll,time = item.split('_')
+                roll = int(roll)
+                stud = authenticate(roll,time,dic["time"])
+                if stud:
+                    a = Attendance(lecture_id=int(dic["tid"]),date=date_from_string(dic["date"]),student=stud)
+            return HttpResponse("OK")
+        return HttpResponse("NOT COOL")
 
 # Create your views here.
 def schedule(request):
