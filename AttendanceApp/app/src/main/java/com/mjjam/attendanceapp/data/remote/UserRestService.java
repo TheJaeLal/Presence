@@ -1,6 +1,7 @@
 package com.mjjam.attendanceapp.data.remote;
 
 
+import com.mjjam.attendanceapp.data.models.AttendanceResponse;
 import com.mjjam.attendanceapp.data.models.UserLoginResponse;
 import com.mjjam.attendanceapp.data.models.UserResponse;
 
@@ -25,14 +26,13 @@ public interface UserRestService {
     );
 
 
-
     @GET("maintotd_json.php")
     Observable<UserResponse> getUser();
 
 
     @FormUrlEncoded
     @POST("auth/login")
-    Observable<UserLoginResponse> setLogin(@Field("username") String username, @Field("password") String password,@Field("type") int type );
+    Observable<UserLoginResponse> setLogin(@Field("username") String username, @Field("password") String password, @Field("type") int type);
 
     @FormUrlEncoded
     @POST("auth/logout")
@@ -41,7 +41,7 @@ public interface UserRestService {
 
     @FormUrlEncoded
     @POST("timetable")
-    Observable<UserResponse> getTimeTable(@Field("token") String token,@Field("day") String day);
+    Observable<UserResponse> getTimeTable(@Field("token") String token, @Field("day") String day);
 
     @FormUrlEncoded
     @POST("timetable")
@@ -49,7 +49,11 @@ public interface UserRestService {
 
     @FormUrlEncoded
     @POST("markattendance")
-    Observable<UserResponse> sendData(@Field("token") String token,@Field("mark") String mark);
+    Observable<UserResponse> sendData(@Field("token") String token, @Field("mark") String mark);
+
+    @FormUrlEncoded
+    @POST("getattendance")
+    Observable<AttendanceResponse> attendanceQuery(@Field("roll_no") int rollNo, @Field("month") String month, @Field("course") String courseName);
 
     //TODO Login "auth/login" success token true false
 }
