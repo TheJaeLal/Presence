@@ -7,7 +7,7 @@ from presence.helper import authenticate
 from presence.helper import date_from_string
 from django.http import JsonResponse
 from auth import views
-from presence.models import __get_attendance
+from presence.helper import __get_attendance
 
 from presence import models
 # Create your views here.
@@ -31,7 +31,6 @@ def mark(request):
             return HttpResponse("OK")
         return HttpResponse("NOT COOL")
 import hashlib
-import calendar
 
 # Create your views here.
 def schedule(request):
@@ -143,7 +142,7 @@ def get_attendance(request):
     }
     if request.method=='POST':
         course_name = request.POST.get('course')
-        roll_no = request.POST.get('roll_no')
+        roll_no = int(request.POST.get('roll_no'))
         month_name = request.POST.get('month')
 
         response['month'],response['course'] = __get_attendance(roll_no,course_name,month_name)
