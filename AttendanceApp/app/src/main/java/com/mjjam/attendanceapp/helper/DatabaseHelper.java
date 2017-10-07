@@ -132,6 +132,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
+    public void insertToStudent(int s_id, String name, String rollno) {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.clear();
+        contentValues.put(StudentTable.S_ID, s_id);
+        contentValues.put(StudentTable.S_NAME, name);
+        contentValues.put(StudentTable.S_ROLLNO, rollno);
+        db.insert(StudentTable.NAME, null, contentValues);
+    }
+
 
     public int getLastRecord() {
         SQLiteDatabase database = getReadableDatabase();
@@ -212,7 +222,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         final int a_id = cursor.getInt(1);
         final String a_day = cursor.getString(2);
         final String a_time = cursor.getString(3);
-        return new MTimeTable(aid,a_id, a_day, a_time);
+        return new MTimeTable(aid, a_id, a_day, a_time);
     }
 
 

@@ -3,8 +3,8 @@ from django.contrib.auth import authenticate,login
 from django.http import HttpResponse
 from django.http import JsonResponse
 import time, hashlib
-from presence.models import Faculty, Student, Course, Lecture, Attendance
 from presence.models import Timetable
+from presence.models import Faculty, Student, Course, Lecture, Attendance,User
 from auth import backend as MyCustomBackend
 from django.core import serializers
 import json
@@ -57,7 +57,6 @@ def user_login(request):
             'success':False,
             'message':"",
             'token':"",
-            'profile':None,
             'username':None,
             'type':None,
             'courses': []
@@ -90,7 +89,14 @@ def user_login(request):
                     faculty=Faculty.objects.get(user__username=username)
                     faculty.token = response['token']
                     faculty.save()
-                    response['profile'] = json.loads(serializers.serialize('json', [ faculty, ]))[0]
+
+                    user=User.objects.get(username=username)
+
+                    response['firstname']=user.first_name
+                    response['lastname']=user.last_name
+                    response['rollno']=""
+
+                    #response['profile'] = json.loads(serializers.serialize('json', [ faculty, ]))[0]
                     response['type'] = 1
                     lecs = Lecture.objects.filter(lecturer=faculty)
 
@@ -115,7 +121,14 @@ def user_login(request):
                     student=Student.objects.get(user__username=username)
                     student.token = response['token']
                     student.save()
-                    response['profile'] = json.loads(serializers.serialize('json', [student, ]))[0]
+
+                    user = User.objects.get(username=username)
+
+                    response['firstname'] = user.first_name
+                    response['lastname'] = user.last_name
+                    response['rollno'] = student.roll_no
+
+                    #response['profile'] = json.loads(serializers.serialize('json', [student, ]))[0]
                     response['type'] = 2
 
 

@@ -7,6 +7,12 @@
             android:icon="@drawable/home_grey"
             android:title="@string/home" />
     </group>
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home_student"
+            android:icon="@drawable/home_grey"
+            android:title="@string/home" />
+    </group>
     <group>
         <item
             android:id="@+id/nav_time_table"
@@ -18,6 +24,12 @@
             android:id="@+id/nav_view_student"
             android:icon="@drawable/student"
             android:title="@string/view_student" />
+    </group>
+    <group>
+        <item
+            android:id="@+id/nav_view_student_attendance"
+            android:icon="@drawable/student"
+            android:title="@string/view_attendance" />
     </group>
     <group>
         <item
