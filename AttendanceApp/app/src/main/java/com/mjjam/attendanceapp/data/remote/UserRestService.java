@@ -52,7 +52,7 @@ public interface UserRestService {
     Observable<UserResponse> sendData(@Field("token") String token, @Field("mark") String mark);
 
     @FormUrlEncoded
-    @POST("getattendance")
+    @POST("attend/get")
     Observable<AttendanceResponse> attendanceQuery(@Field("roll_no") int rollNo, @Field("month") String month, @Field("course") String courseName);
 
     //TODO Login "auth/login" success token true false
