@@ -143,6 +143,28 @@ def populatedata(request):
             "rollno": 112,
             "sem": 7,
             "div": "B"
+        },
+        {
+            "username": "x.y",
+            "password": "123456",
+            "first_name": "X",
+            "last_name": "Y",
+            "email": "x.y@somaiya.edu",
+            "dept": "Computer Engineering",
+            "rollno": 113,
+            "sem": 7,
+            "div": "B"
+        },
+        {
+            "username": "mit.jain",
+            "password": "123456",
+            "first_name": "Mit",
+            "last_name": "Jain",
+            "email": "mit.jain@somaiya.edu",
+            "dept": "Computer Engineering",
+            "rollno": 114,
+            "sem": 7,
+            "div": "B"
         }
     ]
     add_student(students)
