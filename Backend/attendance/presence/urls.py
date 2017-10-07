@@ -6,4 +6,5 @@ from presence import views
 urlpatterns = [
     url(r'^schedule', views.schedule),
     url(r'^mark$',views.mark),
+    url(r'^get$',views.get_attendance)
 ]
