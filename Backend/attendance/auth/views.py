@@ -94,7 +94,7 @@ def user_login(request):
 
                     response['firstname']=user.first_name
                     response['lastname']=user.last_name
-                    response['rollno']=""
+                    response['rollno']=0
 
                     #response['profile'] = json.loads(serializers.serialize('json', [ faculty, ]))[0]
                     response['type'] = 1
