@@ -8,9 +8,6 @@ import hashlib
 
 # Create your views here.
 def schedule(request):
-
-    #Note: Response should be a dict and not a list.
-    #response = []
     response = {}
 
     if(request.method=='POST'):
@@ -23,31 +20,48 @@ def schedule(request):
             schedule=[]
             if(auth_result["type"]=="FACULTY"):
                 #retrieve faculties timetable
-                if(day>=1 and day<=7):
-                    lecs=models.Timetable.objects.get(lecture__lecturer=auth_result["object"])
-                    for lec in lecs:
+                if(day!=None and int(day)>=1 and int(day)<=7):
+                    #courses=models.Course.objects.filter(lecture__lecturer=auth_result["object"],lecture__timetable__day=day)
+                    lecs=models.Timetable.objects.filter(lecture__lecturer=auth_result["object"],day=day)
+                    for course in lecs:
+
                         schedule.append(
                             {
-                                "coursename":lec.course.name,
-                                "starttime":lec.start,
-                                "duration":lec.duration
+                                "coursename":course.lecture.course.name,
+                                "starttime":course.start,
+                                "duration":course.duration
                             }
                         )
                     response['success']=True
                     response["message"]="Successfully Completed the Operation"
                     response['timetable']=schedule
-                    return JsonResponse(response)
+                else:
+                    lecs = models.Timetable.objects.filter(lecture__lecturer=auth_result["object"])
+                    for course in lecs:
+                        schedule.append(
+                            {
+                                "coursename": course.lecture.course.name,
+                                "starttime": course.start,
+                                "duration": course.duration,
+                                "day":course.day,
+                            }
+                        )
+                    response['success'] = True
+                    response["message"] = "Successfully Completed the Operation"
+                    response['timetable'] = schedule
             elif(auth_result["type"]=="STUDENT"):
                 #retrieve student timetable
                 print()
 
         else:
-            response["success"]=False;
-            response["message"]="Invalid Login"
+            response['success']=False;
+            response['message']="Invalid Login"
 
     else:
         response["success"]=False
         response["message"]="Invalid Request"
+
+    return JsonResponse(response)
 
     
 
