@@ -65,7 +65,10 @@ class Student(models.Model):
 	token = models.CharField(max_length=41)
 	contact = models.CharField(max_length=10)
 
-class Attendance(models.Model):
-	lecture = models.ForeignKey(Timetable)
-	student = models.ForeignKey(Student)
+class Period(models.Model):
+	timetable = models.ForeignKey(Timetable)
 	date = models.DateField()
+
+class Attendance(models.Model):
+	period = models.ForeignKey(Period)
+	student = models.ForeignKey(Student)
