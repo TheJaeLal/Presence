@@ -93,10 +93,10 @@ public class StudentAttendanceActivity extends AppCompatActivity implements Stud
 
     @Override
     public void onResponse(AttendanceResponse attendanceResponse) {
+        Toast.makeText(getApplicationContext(), String.valueOf(attendanceResponse.isSuccess()), Toast.LENGTH_LONG).show();
         TextView overall_tv = (TextView) findViewById(R.id.tvOverallAttendance);
         TextView course_tv = (TextView) findViewById(R.id.tvCourseAttendance);
         overall_tv.append(String.valueOf(attendanceResponse.getOverall_apc()) + "%");
         course_tv.append(String.valueOf(attendanceResponse.getCourse_apc()) + "%");
-
     }
 }

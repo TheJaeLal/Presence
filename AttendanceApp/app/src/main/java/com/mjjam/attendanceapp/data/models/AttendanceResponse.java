@@ -9,6 +9,7 @@ import android.os.Parcelable;
 
 public class AttendanceResponse implements Parcelable {
 
+    boolean success;
     int overall_apc;
     int course_apc;
 
@@ -28,8 +29,7 @@ public class AttendanceResponse implements Parcelable {
         this.course_apc = course_apc;
     }
 
-    public AttendanceResponse(int overall_apc, int course_apc)
-    {
+    public AttendanceResponse(int overall_apc, int course_apc) {
         this.overall_apc = overall_apc;
         this.course_apc = course_apc;
     }
@@ -37,6 +37,14 @@ public class AttendanceResponse implements Parcelable {
     protected AttendanceResponse(Parcel in) {
         overall_apc = in.readInt();
         course_apc = in.readInt();
+    }
+
+    public boolean isSuccess() {
+        return success;
+    }
+
+    public void setSuccess(boolean success) {
+        this.success = success;
     }
 
     public static final Creator<AttendanceResponse> CREATOR = new Creator<AttendanceResponse>() {
