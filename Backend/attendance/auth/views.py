@@ -3,12 +3,14 @@ from django.contrib.auth import authenticate,login
 from django.http import HttpResponse
 from django.http import JsonResponse
 import time, hashlib
-from presence.models import Faculty, Student, Course, Lecture, Attendance
+from presence.models import Timetable
+from presence.models import Faculty, Student, Course, Lecture, Attendance,User
 from auth import backend as MyCustomBackend
 from django.core import serializers
 import json
 from django.core.exceptions import ObjectDoesNotExist
-
+from presence.helper import time_to_str
+from presence.helper import get_day_from_index
 # Create your views here.
 def user_login(request):
     #Is it a Http Post request?
@@ -55,7 +57,6 @@ def user_login(request):
             'success':False,
             'message':"",
             'token':"",
-            'profile':None,
             'username':None,
             'type':None,
             'courses': []
@@ -88,12 +89,31 @@ def user_login(request):
                     faculty=Faculty.objects.get(user__username=username)
                     faculty.token = response['token']
                     faculty.save()
-                    response['profile'] = json.loads(serializers.serialize('json', [ faculty, ]))[0]
+
+                    user=User.objects.get(username=username)
+
+                    response['firstname']=user.first_name
+                    response['lastname']=user.last_name
+                    response['rollno']=""
+
+                    #response['profile'] = json.loads(serializers.serialize('json', [ faculty, ]))[0]
                     response['type'] = 1
                     lecs = Lecture.objects.filter(lecturer=faculty)
 
                     print(lecs)
                     response['courses'] = [lec.course.name for lec in lecs]
+
+                    timetable = []
+                    for lec in lecs:
+                        slots = Timetable.objects.filter(lecture=lec)
+                        for slot in slots:
+                            entry = dict()
+                            entry["tid"] = slot.id
+                            entry["time"] = time_to_str(slot.start)
+                            entry["course"] = lec.course.name
+                            entry["day"] = get_day_from_index(slot.day)
+                            timetable.append(entry)
+                    response['data'] = timetable
 
 
                 elif student:
@@ -101,7 +121,14 @@ def user_login(request):
                     student=Student.objects.get(user__username=username)
                     student.token = response['token']
                     student.save()
-                    response['profile'] = json.loads(serializers.serialize('json', [student, ]))[0]
+
+                    user = User.objects.get(username=username)
+
+                    response['firstname'] = user.first_name
+                    response['lastname'] = user.last_name
+                    response['rollno'] = student.roll_no
+
+                    #response['profile'] = json.loads(serializers.serialize('json', [student, ]))[0]
                     response['type'] = 2
 
 

@@ -27,6 +27,7 @@ urlpatterns = [
     url(r'^docs', schema_view),
     url(r'^auth/', include('auth.urls')),
     url(r'^data/populate', mockdata.populatedata),
+    url(r'^attend/',include('presence.urls')),
     url(r'^core/', include('presence.urls')),
 ]
 

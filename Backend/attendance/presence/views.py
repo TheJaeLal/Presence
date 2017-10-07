@@ -1,9 +1,34 @@
+import json
 from django.shortcuts import render
 from django.http import HttpResponse
+from presence.models import Attendance
+from presence.models import Period
+from presence.helper import authenticate
+from presence.helper import date_from_string
 from django.http import JsonResponse
 from auth import views
 
 from presence import models
+# Create your views here.
+
+def mark(request):
+    if request.method == 'POST':
+        token=request.POST.get("token")
+        auth_result=views.verify_token(token)
+        dic = json.loads(request.POST["mark"])
+        if auth_result:
+            p = Period(timetable_id=int(dic["tid"]),date=date_from_string(dic["date"]))
+            p.save()
+            for item in dic["students"]:
+                roll,time = item.split('_')
+                roll = int(roll)
+                stud = authenticate(roll,time,dic["time"],dic["date"])
+                if stud:
+                    # print("Here")
+                    a = Attendance(period=p,student=stud)
+                    a.save()
+            return HttpResponse("OK")
+        return HttpResponse("NOT COOL")
 import hashlib
 import calendar
 
@@ -101,6 +126,7 @@ def schedule(request):
             response['message']="Invalid Login"
 
     else:
+
         response["success"]=False
         response["message"]="Invalid Request"
 
@@ -108,65 +134,56 @@ def schedule(request):
 
     
 
-def update_attendance(request):
-    response = {
-        'success':False
-    }
+# def update_attendance(request):
+#     response = {
+#         'success':False
+#     }
 
-    if request.method=='POST':
-        day = request.POST.get('day')
-        tid = request.POST.get('tid')
-        time = request.POST.get('time')
-        student_list = request.POST.get('students')
-        if __update_attendance(tid,student_list,time_stamp,day):
-           response['success'] = True
-
-
-    return JsonResponse(response)
-
-def __update_attendance(tid,student_list,time_stamp,day):
-    for id in student_list:
-        if verify_id(id,time_stamp):
+#     if request.method=='POST':
+#         day = request.POST.get('day')
+#         tid = request.POST.get('tid')
+#         time = request.POST.get('time')
+#         student_list = request.POST.get('students')
+#         if __update_attendance(tid,student_list,time_stamp,day):
+#            response['success'] = True
 
 
-            #increment attendance
-            models.Attendance.objects.create(
-                student=student,
-                lecture=lecture,
-                date=date
-            )
-            #Add student to models.Attendance...
+#     return JsonResponse(response)
+
+# def __update_attendance(tid,student_list,time_stamp,day):
+#     for id in student_list:
+#         if verify_id(id,time_stamp):
+
+
+#             #increment attendance
+#             models.Attendance.objects.create(
+#                 student=student,
+#                 lecture=lecture,
+#                 date=date
+#             )
+#             #Add student to models.Attendance...
 
 
 
-def verify_id(id,time_stamp):
-    #Get the roll_no 1st 3 characters
-    roll_no = id[:3]
-    student_otp = id[3:]
+# def verify_id(id,time_stamp):
+#     #Get the roll_no 1st 3 characters
+#     roll_no = id[:3]
+#     student_otp = id[3:]
 
-    #Access token is the secret key...
-    curr_student = models.Student.objects.get(roll_no = int(roll_no))
-    secret_key = curr_student.token
+#     #Access token is the secret key...
+#     curr_student = models.Student.objects.get(roll_no = int(roll_no))
+#     secret_key = curr_student.token
 
-    #Properly format time_stamp
-    time_stamp = get_unix(time_stamp)
+#     #Properly format time_stamp
+#     time_stamp = get_unix(time_stamp)
 
-    otp_generator = str(time_stamp) + str(secret_key)
+#     otp_generator = str(time_stamp) + str(secret_key)
 
-    #Convert to UTF-8
-    otp_generator.encode()
+#     #Convert to UTF-8
+#     otp_generator.encode()
 
-    if student_otp == hashlib.sha1(hash_generator).hex_digest():
-        return True
-
-    return False
-
-def get_unix(time):
-    #Convert provided time_stamp into unix time..
-    #Time is in format hh:mm 24 hour format...
-
-    return time_stamp
-
+#     if student_otp == hashlib.sha1(hash_generator).hex_digest():
+#         return True
 
 #Return attendance in percentage
 def get_attendance(request):
@@ -220,6 +237,11 @@ def __get_attendance(roll_no,course_name,month_name):
 
         #Filter for course
         attendance_list_for_student_for_month_for_course = [a for a in attendance_list_for_student if a.lecture.lecture.course.name == course_name]
+#     return False
+
+# def get_unix(time):
+#     #Convert provided time_stamp into unix time..
+#     #Time is in format hh:mm 24 hour format...
 
 
         attendance_for_course_for_div_for_course = models.Attendance.filter(lecture__lecture__div__div==student.div, lecture__lecture__course__name==course_name)
