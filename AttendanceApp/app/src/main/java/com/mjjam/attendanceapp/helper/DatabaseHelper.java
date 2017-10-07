@@ -121,13 +121,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
-    public void insertToAttendance(int a_id, String a_day, String a_time_slot) {
+    public void insertToAttendance(int a_id, String a_day, String a_starttime_slot, String a_endtime_slot, String a_name) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.clear();
         contentValues.put(TimeTable.A_ID, a_id);
         contentValues.put(TimeTable.A_DAY, a_day);
-        contentValues.put(TimeTable.A_TIME, a_time_slot);
+        contentValues.put(TimeTable.A_START_TIME, a_starttime_slot);
+        contentValues.put(TimeTable.A_END_TIME, a_endtime_slot);
+        contentValues.put(TimeTable.A_NAME, a_name);
         db.insert(TimeTable.NAME, null, contentValues);
 
     }
@@ -161,6 +163,38 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
+    public int getTimeTable(String day, String time) {
+        SQLiteDatabase database = getReadableDatabase();
+        Cursor c = database.rawQuery("SELECT * FROM " + TimeTable.NAME + " " + time + " >= " + TimeTable.A_START_TIME + " AND " + time + " <= " + TimeTable.A_END_TIME + " " + TimeTable.A_DAY + " = " + day + " LIMIT 1", null);
+        int s_id = 0;
+
+        if (c != null && c.moveToFirst()) {
+            int id = c.getColumnIndex(TimeTable.A_ID);
+            s_id = c.getInt(id);
+        }
+        if (c != null) {
+            c.close();
+        }
+        return s_id;
+
+    }
+
+    public String getTime(String day, String time) {
+        SQLiteDatabase database = getReadableDatabase();
+        Cursor c = database.rawQuery("SELECT * FROM " + TimeTable.NAME + " " + time + " >= " + TimeTable.A_START_TIME + " AND " + time + " <= " + TimeTable.A_END_TIME + " " + TimeTable.A_DAY + " = " + day + " LIMIT 1", null);
+        String s_time = "";
+
+        if (c != null && c.moveToFirst()) {
+            int id = c.getColumnIndex(TimeTable.A_START_TIME);
+            s_time = c.getString(id);
+        }
+        if (c != null) {
+            c.close();
+        }
+        return s_time;
+
+    }
+
     public boolean checkTimeTableisEmpty() {
         SQLiteDatabase database = getWritableDatabase();
         Cursor c = database.rawQuery("SELECT COUNT(*) FROM " + TimeTable.NAME, null);
@@ -174,7 +208,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
-    public void updateToTimeTable(String a_id, String a_day, String a_time) {
+    public void updateToTimeTable(String a_id, String a_day, String a_starttime, String a_endtime) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.clear();
@@ -183,7 +217,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         sadvicharArgs[0] = String.valueOf(a_id);
 
         contentValues.put(TimeTable.A_DAY, a_day);
-        contentValues.put(TimeTable.A_TIME, a_time);
+        contentValues.put(TimeTable.A_START_TIME, a_starttime);
+        contentValues.put(TimeTable.A_END_TIME, a_endtime);
 
         db.update(TimeTable.NAME, contentValues, "CAST ( " + TimeTable.A_ID + " AS TEXT ) = ? ", sadvicharArgs);
 

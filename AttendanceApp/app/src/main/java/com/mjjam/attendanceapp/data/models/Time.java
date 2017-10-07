@@ -6,9 +6,26 @@ package com.mjjam.attendanceapp.data.models;
 
 public class Time {
     int tid;
-    String lecturename;
-    String lecturetime;
+    String course;
+    String start_time;
+    String end_time;
     String day;
+
+    public String getStart_time() {
+        return start_time;
+    }
+
+    public void setStart_time(String start_time) {
+        this.start_time = start_time;
+    }
+
+    public String getEnd_time() {
+        return end_time;
+    }
+
+    public void setEnd_time(String end_time) {
+        this.end_time = end_time;
+    }
 
     public int getTid() {
         return tid;
@@ -18,21 +35,14 @@ public class Time {
         this.tid = tid;
     }
 
-    public String getLecturename() {
-        return lecturename;
+    public String getCourse() {
+        return course;
     }
 
-    public void setLecturename(String lecturename) {
-        this.lecturename = lecturename;
+    public void setCourse(String course) {
+        this.course = course;
     }
 
-    public String getLecturetime() {
-        return lecturetime;
-    }
-
-    public void setLecturetime(String lecturetime) {
-        this.lecturetime = lecturetime;
-    }
 
     public String getDay() {
         return day;

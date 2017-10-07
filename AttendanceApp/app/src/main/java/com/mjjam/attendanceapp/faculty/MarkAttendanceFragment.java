@@ -8,7 +8,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
@@ -16,32 +15,32 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.mjjam.attendanceapp.Manifest;
 import com.mjjam.attendanceapp.R;
+import com.mjjam.attendanceapp.common.AttendanceApp;
 import com.mjjam.attendanceapp.common.ConnectionDetector;
+import com.mjjam.attendanceapp.data.local.SharedPreferenceManager;
 import com.mjjam.attendanceapp.data.models.UserResponse;
+import com.mjjam.attendanceapp.data.repository.UserRepository;
 import com.mjjam.attendanceapp.helper.DatabaseHelper;
 import com.mjjam.attendanceapp.widgets.BaseButton;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Locale;
@@ -61,7 +60,7 @@ public class MarkAttendanceFragment extends Fragment implements MarkAttendanceCo
     private ListView mDevicesListView;
     BaseButton bRefresh;
     private ConnectedThread mConnectedThread;
-    HashSet<String> btDevices;
+    HashSet<String> students;
 
     public String TAG = "HomeFragment";
     private Handler mHandler; // Our main handler that will receive callback notifications
@@ -89,12 +88,15 @@ public class MarkAttendanceFragment extends Fragment implements MarkAttendanceCo
                 discover();
             }
         });
-        btDevices = new HashSet<>();
+        students = new HashSet<>();
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
             ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
         mBTArrayAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1);
         mBTAdapter = BluetoothAdapter.getDefaultAdapter(); // get a handle on the bluetooth radio
+        bluetoothOn();
+
         mDevicesListView.setAdapter(mBTArrayAdapter);
+
         if (mBTArrayAdapter == null) {
             // Device does not support Bluetooth
             Toast.makeText(getActivity().getApplicationContext(), "Bluetooth device not found!", Toast.LENGTH_SHORT).show();
@@ -164,7 +166,25 @@ public class MarkAttendanceFragment extends Fragment implements MarkAttendanceCo
 
 
     private void onlinePushData() {
-
+        UserRepository userRepository = ((AttendanceApp) getActivity().getApplication()).getComponent().userRepository();
+        MarkAttendancePresenter markAttendancePresenter = new MarkAttendancePresenter(userRepository, this);
+//        Calendar c = Calendar.getInstance();
+//        int day = c.get(Calendar.DAY_OF_WEEK);
+//        String DAY = checkDay(day);
+//        SimpleDateFormat df = new SimpleDateFormat("HH:mm");
+//        String TIME = df.format(c.getTime());
+//        DatabaseHelper databaseHelper = DatabaseHelper.getDbInstance(getActivity().getApplicationContext());
+//        int tid = databaseHelper.getTimeTable(DAY,TIME);
+//        SimpleDateFormat dfDate = new SimpleDateFormat("dd/mm//yyyy");
+//        String DATE = dfDate.format(dfDate);
+//        String time = databaseHelper.getTime(DAY,TIME);
+//        Gson gson = new Gson();
+//        gson.toJson(tid);
+//        gson.toJson(DATE);
+//        gson.toJson(time);
+//        gson.toJson(students);
+//        Log.d("Data",gson.toString());
+//        markAttendancePresenter.sendData(new SharedPreferenceManager(getActivity().getApplicationContext()).getAccessToken(), );
     }
 
     private void offlinePushData() {
@@ -173,6 +193,28 @@ public class MarkAttendanceFragment extends Fragment implements MarkAttendanceCo
         SimpleDateFormat df = new SimpleDateFormat("HH:mm", new Locale("en"));
         String formattedDate = df.format(c.getTime());
         //databaseHelper.insertToStudent();
+    }
+
+    String checkDay(int day) {
+        switch (day) {
+            case 1:
+                return "Monday";
+            case 2:
+                return "Tuesday";
+            case 3:
+                return "Wednesday";
+            case 4:
+                return "Thursday";
+            case 5:
+                return "Friday";
+            case 6:
+                return "Saturday";
+            case 7:
+                return "Sunday";
+            default:
+                return "";
+
+        }
     }
 
     final BroadcastReceiver blReceiver = new BroadcastReceiver() {
@@ -184,7 +226,7 @@ public class MarkAttendanceFragment extends Fragment implements MarkAttendanceCo
                 // add the name to the list
                 if (device.getName() != null && device.getName().contains("_"))
                     mBTArrayAdapter.add(device.getName());
-                btDevices.add(device.getName());
+                students.add(device.getName());
                 mBTArrayAdapter.notifyDataSetChanged();
             }
         }

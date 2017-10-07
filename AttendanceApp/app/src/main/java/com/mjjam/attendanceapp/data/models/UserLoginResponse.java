@@ -19,6 +19,15 @@ public class UserLoginResponse implements Parcelable {
     String username;
     String lastname;
     ArrayList<String> courses;
+    ArrayList<Time> data;
+
+    public ArrayList<Time> getData() {
+        return data;
+    }
+
+    public void setData(ArrayList<Time> data) {
+        this.data = data;
+    }
 
     public String getUsername() {
         return username;

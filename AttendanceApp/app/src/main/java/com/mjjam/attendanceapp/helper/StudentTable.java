@@ -9,7 +9,7 @@ public interface StudentTable {
     String[] PROJECTION = new String[]{SID,S_ID, S_NAME, S_ROLLNO};
 
     String CREATE = "CREATE TABLE " + NAME + " ( "
-            + SID + " INTEGER AUTOINCREMENT, "
+            + SID + " INTEGER AUTO INCREMENT, "
             + S_ID + " INTEGER, "
             + S_NAME + " TEXT, "
             + S_ROLLNO + " TEXT, " +

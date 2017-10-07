@@ -45,7 +45,7 @@ public class StudentHomeFragment extends Fragment implements StudentHomeAdapter.
         tvSName = (BaseTextView) view.findViewById(R.id.tvSName);
         tvSTime = (BaseTextView) view.findViewById(R.id.tvSTime);
         tvSName.setText("DWM");
-        tvSTime.setText("12:55");
+        tvSTime.setText("16:10");
         DateFormat dateFormat = new SimpleDateFormat("HH:mm");
         Date date = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
@@ -64,7 +64,7 @@ public class StudentHomeFragment extends Fragment implements StudentHomeAdapter.
         long elapsed = d2.getTime() - d1.getTime();
         BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
-        if (Integer.parseInt(String.valueOf((elapsed / 1000) / 60)) <= 15) {
+        if (Integer.parseInt(String.valueOf((elapsed / 1000) / 60)) <= 500) {
             if (!mBluetoothAdapter.isEnabled()) {
                 mBluetoothAdapter.enable();
                 new SharedPreferenceManager(getActivity().getApplicationContext()).saveBluetoothName(mBluetoothAdapter.getName());
@@ -84,7 +84,7 @@ public class StudentHomeFragment extends Fragment implements StudentHomeAdapter.
         ArrayList<Lecture> lectures = new ArrayList<>();
         lectures.add(new Lecture("DWM", "11:30"));
         lectures.add(new Lecture("RDBMS", "13:15"));
-        lectures.add(new Lecture("RDBMS", "13:15"));
+        lectures.add(new Lecture("JAVA", "14:15"));
         lectures.add(new Lecture("RDBMS", "13:15"));
         lectures.add(new Lecture("RDBMS", "13:15"));
         lectures.add(new Lecture("RDBMS", "13:15"));
@@ -109,23 +109,25 @@ public class StudentHomeFragment extends Fragment implements StudentHomeAdapter.
     public String HashGenerator(String time) {
         String SHAHash = "";
         String custom_checksum = new SharedPreferenceManager(getActivity().getApplicationContext()).getAccessToken() + time;
+        Log.d("cusHash", custom_checksum);
         MessageDigest mdSha1 = null;
+        StringBuffer sb = null;
         try {
             URLEncoder.encode(custom_checksum, "utf-8");
-            mdSha1 = MessageDigest.getInstance("SHA-1");
-            mdSha1.update(custom_checksum.getBytes("ASCII"));
-            byte[] data = mdSha1.digest();
-            SHAHash = convertToHex(data);
-            Log.e("Hash", "Generated SHA1 : " + SHAHash);
+            MessageDigest mDigest = MessageDigest.getInstance("SHA1");
+            byte[] result = mDigest.digest(custom_checksum.getBytes());
+            sb = new StringBuffer();
+            for (int i = 0; i < result.length; i++) {
+                sb.append(Integer.toString((result[i] & 0xff) + 0x100, 16).substring(1));
+            }
+            Log.d("hash",sb.toString());
 
         } catch (NoSuchAlgorithmException e) {
             Log.e("Hash", "Error initializing SHA1 message digest");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
-        return SHAHash;
+        return sb.toString();
     }
 
     private static String convertToHex(byte[] data) throws java.io.IOException {

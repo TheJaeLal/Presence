@@ -16,6 +16,10 @@ public class SharedPreferenceManager {
     private static final String PREFS_CATEGORY = "category";
     private static final String PREFS_USERNAME = "userName";
     private static final String PREFS_COURSELIST = "courseList";
+    private static final String PREFS_TID = "tid";
+    private static final String PREFS_TIME = "time";
+    private static final String PREFS_DAY = "day";
+
 
     private static final String PREFS_ACCESS_TOKEN = "accessToken";
     private static final String PREFS_MAINPAGE = "mainpage";

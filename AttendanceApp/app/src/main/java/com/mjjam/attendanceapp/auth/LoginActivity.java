@@ -20,6 +20,7 @@ import com.mjjam.attendanceapp.data.local.SharedPreferenceManager;
 import com.mjjam.attendanceapp.data.models.UserLoginResponse;
 import com.mjjam.attendanceapp.data.models.UserResponse;
 import com.mjjam.attendanceapp.data.repository.UserRepository;
+import com.mjjam.attendanceapp.helper.DatabaseHelper;
 import com.mjjam.attendanceapp.widgets.BaseButton;
 import com.mjjam.attendanceapp.widgets.BaseEditText;
 import com.mjjam.attendanceapp.widgets.BaseRadioButton;
@@ -99,18 +100,32 @@ public class LoginActivity extends BaseActivity implements LoginContract.LoginVi
                 new SharedPreferenceManager(getApplicationContext()).saveFirstName(userLoginResponse.getFirstname());
                 new SharedPreferenceManager(getApplicationContext()).saveLastName(userLoginResponse.getLastname());
                 new SharedPreferenceManager(getApplicationContext()).saveUserName(userLoginResponse.getUsername());
+                //new SharedPreferenceManager(getApplicationContext()).save
+//                for (int i = 0; i < userLoginResponse.getData().size(); i++) {
+//                    DatabaseHelper db = DatabaseHelper.getDbInstance(getApplicationContext());
+//                    db.insertToAttendance(userLoginResponse.getData().get(i).getTid(),
+//                            userLoginResponse.getData().get(i).getDay()
+//                            , userLoginResponse.getData().get(i).getStart_time()
+//                            ,userLoginResponse.getData().get(i).getEnd_time()
+//                            , userLoginResponse.getData().get(i).getCourse());
+//                }
+
             } else {
                 new SharedPreferenceManager(getApplicationContext()).saveFirstName(userLoginResponse.getFirstname());
                 new SharedPreferenceManager(getApplicationContext()).saveLastName(userLoginResponse.getLastname());
                 new SharedPreferenceManager(getApplicationContext()).saveRollNo(userLoginResponse.getRollno());
                 new SharedPreferenceManager(getApplicationContext()).saveUserName(userLoginResponse.getUsername());
             }
+
+
+
             Intent i = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(i);
             finish();
         } else {
             Toast.makeText(LoginActivity.this, userLoginResponse.getMessage(), Toast.LENGTH_SHORT).show();
         }
+
 
     }
 

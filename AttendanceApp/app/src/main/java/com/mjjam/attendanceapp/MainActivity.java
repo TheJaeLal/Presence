@@ -7,6 +7,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -103,7 +104,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
         }
         Config.changeFontInViewGroup(drawer, CustomFontLoader.MONTSERRAT);
-
+        Log.d("token",new SharedPreferenceManager(getApplicationContext()).getAccessToken());
 
     }
 
@@ -158,14 +159,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     @Override
     public void onData(MainWrapper mainWrapper) {
-        DatabaseHelper db = DatabaseHelper.getDbInstance(getApplicationContext());
-        for (int i = 0; i < mainWrapper.data.size(); i++) {
-            try {
-                db.insertToAttendance(mainWrapper.data.get(i).getTid()
-                        , mainWrapper.data.get(i).getTday()
-                        , mainWrapper.data.get(i).getTtime());
-            } catch (Exception ae) {
-            }
-        }
+
     }
 }
