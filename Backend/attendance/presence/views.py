@@ -12,20 +12,20 @@ from presence import models
 
 def mark(request):
     if request.method == 'POST':
-        # token=request.POST.get("token")
-        # auth_result=views.verify_token(token)
+        token=request.POST.get("token")
+        auth_result=views.verify_token(token)
         dic = json.loads(request.POST["mark"])
-        # if auth_result:
-        for item in dic["students"]:
-            roll,time = item.split('_')
-            roll = int(roll)
-            stud = authenticate(roll,time,dic["time"],dic["date"])
-            if stud:
-                print("Here")
-                a = Attendance(lecture_id=int(dic["tid"]),date=date_from_string(dic["date"]),student=stud)
-                a.save()
-        return HttpResponse("OK")
-        # return HttpResponse("NOT COOL")
+        if auth_result:
+            for item in dic["students"]:
+                roll,time = item.split('_')
+                roll = int(roll)
+                stud = authenticate(roll,time,dic["time"],dic["date"])
+                if stud:
+                    print("Here")
+                    a = Attendance(lecture_id=int(dic["tid"]),date=date_from_string(dic["date"]),student=stud)
+                    a.save()
+            return HttpResponse("OK")
+        return HttpResponse("NOT COOL")
 import hashlib
 
 # Create your views here.
@@ -130,63 +130,63 @@ def schedule(request):
 
     
 
-def update_attendance(request):
-    response = {
-        'success':False
-    }
+# def update_attendance(request):
+#     response = {
+#         'success':False
+#     }
 
-    if request.method=='POST':
-        day = request.POST.get('day')
-        tid = request.POST.get('tid')
-        time = request.POST.get('time')
-        student_list = request.POST.get('students')
-        if __update_attendance(tid,student_list,time_stamp,day):
-           response['success'] = True
-
-
-    return JsonResponse(response)
-
-def __update_attendance(tid,student_list,time_stamp,day):
-    for id in student_list:
-        if verify_id(id,time_stamp):
+#     if request.method=='POST':
+#         day = request.POST.get('day')
+#         tid = request.POST.get('tid')
+#         time = request.POST.get('time')
+#         student_list = request.POST.get('students')
+#         if __update_attendance(tid,student_list,time_stamp,day):
+#            response['success'] = True
 
 
-            #increment attendance
-            models.Attendance.objects.create(
-                student=student,
-                lecture=lecture,
-                date=date
-            )
-            #Add student to models.Attendance...
+#     return JsonResponse(response)
+
+# def __update_attendance(tid,student_list,time_stamp,day):
+#     for id in student_list:
+#         if verify_id(id,time_stamp):
 
 
-
-def verify_id(id,time_stamp):
-    #Get the roll_no 1st 3 characters
-    roll_no = id[:3]
-    student_otp = id[3:]
-
-    #Access token is the secret key...
-    curr_student = models.Student.objects.get(roll_no = int(roll_no))
-    secret_key = curr_student.token
-
-    #Properly format time_stamp
-    time_stamp = get_unix(time_stamp)
-
-    otp_generator = str(time_stamp) + str(secret_key)
-
-    #Convert to UTF-8
-    otp_generator.encode()
-
-    if student_otp == hashlib.sha1(hash_generator).hex_digest():
-        return True
-
-    return False
-
-def get_unix(time):
-    #Convert provided time_stamp into unix time..
-    #Time is in format hh:mm 24 hour format...
+#             #increment attendance
+#             models.Attendance.objects.create(
+#                 student=student,
+#                 lecture=lecture,
+#                 date=date
+#             )
+#             #Add student to models.Attendance...
 
 
 
-    return time_stamp
+# def verify_id(id,time_stamp):
+#     #Get the roll_no 1st 3 characters
+#     roll_no = id[:3]
+#     student_otp = id[3:]
+
+#     #Access token is the secret key...
+#     curr_student = models.Student.objects.get(roll_no = int(roll_no))
+#     secret_key = curr_student.token
+
+#     #Properly format time_stamp
+#     time_stamp = get_unix(time_stamp)
+
+#     otp_generator = str(time_stamp) + str(secret_key)
+
+#     #Convert to UTF-8
+#     otp_generator.encode()
+
+#     if student_otp == hashlib.sha1(hash_generator).hex_digest():
+#         return True
+
+#     return False
+
+# def get_unix(time):
+#     #Convert provided time_stamp into unix time..
+#     #Time is in format hh:mm 24 hour format...
+
+
+
+#     return time_stamp
