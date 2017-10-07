@@ -43,5 +43,10 @@ public class UserRepositoryImpl implements UserRepository {
         return userRestService.getTimeTable(token, day);
     }
 
+    @Override
+    public Observable<UserResponse> sendData(String token, String mark) {
+        return userRestService.sendData(token, mark);
+    }
+
 
 }

@@ -32,9 +32,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".faculty.BluetoothDeviceActivity"
-            android:label="Mark Attendance"
+            android:name=".timetable.TimeTableActivity"
+            android:label="Time Table"
             android:theme="@style/AppTheme" />
+        <activity
+            android:name=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

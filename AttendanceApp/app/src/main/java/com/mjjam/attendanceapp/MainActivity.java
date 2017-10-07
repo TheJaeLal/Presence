@@ -26,7 +26,11 @@ import com.mjjam.attendanceapp.data.models.MainWrapper;
 import com.mjjam.attendanceapp.data.models.UserLoginResponse;
 import com.mjjam.attendanceapp.data.models.UserResponse;
 import com.mjjam.attendanceapp.data.repository.UserRepository;
+import com.mjjam.attendanceapp.faculty.MarkAttendanceFragment;
 import com.mjjam.attendanceapp.helper.DatabaseHelper;
+import com.mjjam.attendanceapp.student.StudentAttendanceActivity;
+import com.mjjam.attendanceapp.student.StudentHomeFragment;
+import com.mjjam.attendanceapp.timetable.TimeTableActivity;
 
 
 /***
@@ -73,11 +77,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 //                getSupportFragmentManager().beginTransaction();
 //        fragmentTransaction.replace(R.id.fragment_container, fragment);
 //        fragmentTransaction.commit();
-        FacultyHomeFragment fragment = new FacultyHomeFragment();
-        android.support.v4.app.FragmentTransaction fragmentTransaction =
-                getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_container, fragment);
-        fragmentTransaction.commit();
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -99,10 +98,24 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             role.setText(getString(R.string.as_student));
 
         navigationView.setNavigationItemSelectedListener(this);
-        //if (new SharedPreferenceManager(getApplicationContext()).getCategory() == 3)
-        //navigationView.getMenu().findItem(R.id.nav_subscription).setVisible(false);
-        //else if (new SharedPreferenceManager(getApplicationContext()).getCategory() == 4)
-        //navigationView.getMenu().findItem(R.id.nav_assignment).setVisible(false);
+        if (new SharedPreferenceManager(getApplicationContext()).getCategory() == 1) {
+            navigationView.getMenu().findItem(R.id.nav_view_student_attendance).setVisible(false);
+            navigationView.getMenu().findItem(R.id.nav_home_student).setVisible(false);
+            MarkAttendanceFragment fragment = new MarkAttendanceFragment();
+            android.support.v4.app.FragmentTransaction fragmentTransaction =
+                    getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.fragment_container, fragment);
+            fragmentTransaction.commit();
+
+        } else if (new SharedPreferenceManager(getApplicationContext()).getCategory() == 2) {
+            StudentHomeFragment fragment = new StudentHomeFragment();
+            android.support.v4.app.FragmentTransaction fragmentTransaction =
+                    getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.fragment_container, fragment);
+            fragmentTransaction.commit();
+            navigationView.getMenu().findItem(R.id.nav_home).setVisible(false);
+            navigationView.getMenu().findItem(R.id.nav_view_student).setVisible(false);
+        }
         Config.changeFontInViewGroup(drawer, CustomFontLoader.MONTSERRAT);
 
 
@@ -114,19 +127,31 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         int id = item.getItemId();
         switch (id) {
             case R.id.nav_home:
-                FacultyHomeFragment fragment = new FacultyHomeFragment();
+                MarkAttendanceFragment fragment = new MarkAttendanceFragment();
                 android.support.v4.app.FragmentTransaction fragmentTransaction =
                         getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.fragment_container, fragment);
                 fragmentTransaction.commit();
                 break;
+
+            case R.id.nav_home_student:
+                StudentHomeFragment studentHomeFragment = new StudentHomeFragment();
+                android.support.v4.app.FragmentTransaction fragmentTransaction1 =
+                        getSupportFragmentManager().beginTransaction();
+                fragmentTransaction1.replace(R.id.fragment_container,studentHomeFragment);
+                fragmentTransaction1.commit();
+                break;
             case R.id.nav_time_table:
-//                Intent i = new Intent(MainActivity.this, NewsFeedActivity.class);
-//                startActivity(i);
+                Intent i = new Intent(MainActivity.this, TimeTableActivity.class);
+                startActivity(i);
                 break;
             case R.id.nav_view_student:
-//                Intent subscription = new Intent(MainActivity.this, SubscriptionsActivity.class);
+//                Intent subscription = new Intent(MainActivity.this, Classroo.class);
 //                startActivity(subscription);
+                break;
+            case R.id.nav_view_student_attendance:
+                Intent studentAttendance = new Intent(MainActivity.this, StudentAttendanceActivity.class);
+                startActivity(studentAttendance);
                 break;
             case R.id.nav_settings:
 //                Intent settings = new Intent(MainActivity.this, SettingsActivity.class);
