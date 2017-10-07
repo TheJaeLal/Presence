@@ -1,6 +1,7 @@
 package com.mjjam.attendanceapp.data.implementation;
 
 
+import com.mjjam.attendanceapp.data.models.AttendanceResponse;
 import com.mjjam.attendanceapp.data.models.UserLoginResponse;
 import com.mjjam.attendanceapp.data.models.UserResponse;
 import com.mjjam.attendanceapp.data.remote.UserRestService;
@@ -46,6 +47,11 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public Observable<UserResponse> sendData(String token, String mark) {
         return userRestService.sendData(token, mark);
+    }
+
+    @Override
+    public Observable<AttendanceResponse> attendanceQuery(int rollNo, String month, String courseName) {
+        return userRestService.attendanceQuery(rollNo, month, courseName);
     }
 
 

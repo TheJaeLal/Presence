@@ -1,5 +1,6 @@
 package com.mjjam.attendanceapp.data.repository;
 
+import com.mjjam.attendanceapp.data.models.AttendanceResponse;
 import com.mjjam.attendanceapp.data.models.UserLoginResponse;
 import com.mjjam.attendanceapp.data.models.UserResponse;
 
@@ -22,5 +23,7 @@ public interface UserRepository {
     Observable<UserResponse> getTimeTable(String token);
     Observable<UserResponse> getTimeTable(String token,String day);
     Observable<UserResponse> sendData(String token,String mark);
+    Observable<AttendanceResponse> attendanceQuery(int rollNo, String month, String courseName);
+
 
 }
