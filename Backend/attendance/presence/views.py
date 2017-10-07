@@ -7,7 +7,11 @@ from presence import models
 
 # Create your views here.
 def schedule(request):
-    response = []
+
+    #Note: Response should be a dict and not a list.
+    #response = []
+    response = {}
+
     if(request.method=='POST'):
 
         token=request.POST.get("token")
@@ -43,3 +47,12 @@ def schedule(request):
     else:
         response["success"]=False
         response["message"]="Invalid Request"
+
+def get_student_data(request):
+    response = {}
+    if request.method=='POST':
+
+        pass
+        #Suppose we have student data
+        #Suppose we have student time
+        #Suppose we have student
