@@ -3,26 +3,31 @@ package com.mjjam.attendanceapp.student;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.icu.util.Calendar;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.util.Base64;
 import android.util.Log;
 
+import com.mjjam.attendanceapp.MainActivity;
 import com.mjjam.attendanceapp.data.local.SharedPreferenceManager;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimerTask;
 
 /**
  * Created by Johns on 10/6/2017.
  */
 
 //Broadcast from Student App to mark attendance
-public class LectureAttendance {
+public class LectureAttendance extends AsyncTask<Void, Void, String> {
 
     private BluetoothAdapter bluetoothAdapter;
     private String defaultName = bluetoothAdapter.getName();
@@ -37,12 +42,16 @@ public class LectureAttendance {
     public String HashGenerator() {
         prefs = new SharedPreferenceManager(context);
         String SHAHash = "";
-        Date currentTime = Calendar.getInstance().getTime();
-        SimpleDateFormat format = new SimpleDateFormat("hh:mm");
-        format.format(currentTime);
-        String custom_checksum = prefs.getAccessToken() + currentTime.toString();
+        long epochTime = System.currentTimeMillis();
+//        Date currentTime = Calendar.getInstance().getTime();
+//        DateTime dateTimeInUtc = new DateTime( "2011-07-19T18:23:20+0000", DateTimeZone.UTC );
+//        long secondsSinceUnixEpoch = ( currentTime.getMillis() / 1000 ); // Convert milliseconds to seconds.
+//        SimpleDateFormat format = new SimpleDateFormat("hh:mm");
+//        format.format(currentTime);
+        String custom_checksum = prefs.getAccessToken() + String.valueOf(epochTime/10000); // Change to start time
         MessageDigest mdSha1 = null;
         try {
+            URLEncoder.encode(custom_checksum, "utf-8");
             mdSha1 = MessageDigest.getInstance("SHA-1");
             mdSha1.update(custom_checksum.getBytes("ASCII"));
             byte[] data = mdSha1.digest();
@@ -75,12 +84,26 @@ public class LectureAttendance {
             defaultName = bluetoothAdapter.getName();
             bluetoothAdapter.enable();
             if (bluetoothAdapter.getState() == BluetoothAdapter.STATE_ON) {
-                String temp_identifier = String.valueOf(prefs.getRollNo()) + HashGenerator();
+                String temp_identifier = String.valueOf(prefs.getRollNo()) + "_" + HashGenerator();
                 bluetoothAdapter.setName(temp_identifier);
             }
         } else {
             bluetoothAdapter.setName(defaultName);
             bluetoothAdapter.disable();
         }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    protected String doInBackground(Void... params) {
+        ChangeBTName(context, 1);
+        try {
+            Thread.sleep(600000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        ChangeBTName(context, 0);
+
+        return null;
     }
 }
