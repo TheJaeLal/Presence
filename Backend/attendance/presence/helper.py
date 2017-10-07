@@ -7,12 +7,14 @@ EPOCH = datetime.datetime.utcfromtimestamp(0)
 def authenticate(roll,hash1,lect_time,date):
 	stud = Student.objects.get(roll_no=roll)
 	token = stud.token
+	print("Token:",token)
 	key = token+str(get_epoch(date,lect_time))
+	print("HASH1:",hash1)
 	hash2 = hash_it(key)
-
+	print("HASH2:",hash2)
 	if hash1 != hash2:
 		return None
-	return
+	return stud
 
 def hash_it(key):
 	key = key.encode()

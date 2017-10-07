@@ -12,18 +12,20 @@ from presence import models
 
 def mark(request):
     if request.method == 'POST':
-        token=request.POST.get("token")
-        auth_result=views.verify_token(token)
+        # token=request.POST.get("token")
+        # auth_result=views.verify_token(token)
         dic = json.loads(request.POST["mark"])
-        if auth_result:
-            for item in dic["students"]:
-                roll,time = item.split('_')
-                roll = int(roll)
-                stud = authenticate(roll,time,dic["time"])
-                if stud:
-                    a = Attendance(lecture_id=int(dic["tid"]),date=date_from_string(dic["date"]),student=stud)
-            return HttpResponse("OK")
-        return HttpResponse("NOT COOL")
+        # if auth_result:
+        for item in dic["students"]:
+            roll,time = item.split('_')
+            roll = int(roll)
+            stud = authenticate(roll,time,dic["time"],dic["date"])
+            if stud:
+                print("Here")
+                a = Attendance(lecture_id=int(dic["tid"]),date=date_from_string(dic["date"]),student=stud)
+                a.save()
+        return HttpResponse("OK")
+        # return HttpResponse("NOT COOL")
 
 # Create your views here.
 def schedule(request):
